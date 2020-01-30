@@ -4,6 +4,7 @@ import com.example.tryonetask.data.MovieClient;
 import com.example.tryonetask.data.MovieInterface;
 import com.example.tryonetask.pojo.ListingResponse;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.tryPaging.RetrofitClient;
 
 import java.util.List;
 
@@ -17,32 +18,51 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class Repo {
 
-
     private MovieInterface movieInterface;
+
+
+
 
     public Repo(MovieInterface movieInterface) {
         this.movieInterface = movieInterface;
     }
 
-    public Single<List<MovieModel>> modelSingle(){
-        return movieInterface.getPopularMovie()
-                .map(new Function<ListingResponse, List<MovieModel>>() {
-                    @Override
-                    public List<MovieModel> apply(ListingResponse listingResponse) throws Exception {
-                        return listingResponse.results;
-                    }
-                }).subscribeOn(Schedulers.io())
+
+    public  Single<ListingResponse> movieSingle(int pageSize, int firstPage){
+        return movieInterface.getNewPopularMovie(firstPage,pageSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+//        return RetrofitClient.getInstance().getApi().getNewPopularMovie(firstPage, pageSize)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<ListingResponse> topSinlgeMovie(int pageSize , int firstPage){
+        return movieInterface.getNewTopMovie(firstPage , pageSize)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Single<List<MovieModel>> getPopularMovies(){
-        return MovieClient.movieInterface.getPopularMovie()
-                .map(new Function<ListingResponse, List<MovieModel>>() {
-                    @Override
-                    public List<MovieModel> apply(ListingResponse listingResponse) throws Exception {
-                        return listingResponse.results;
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
+//    public Single<List<MovieModel>> modelSingle(){
+//        return movieInterface.getPopularMovie()
+//                .map(new Function<ListingResponse, List<MovieModel>>() {
+//                    @Override
+//                    public List<MovieModel> apply(ListingResponse listingResponse) throws Exception {
+//                        return listingResponse.results;
+//                    }
+//                }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
+
+//    public static Single<List<MovieModel>> getPopularMovies(){
+//        return MovieClient.movieInterface.getPopularMovie()
+//                .map(new Function<ListingResponse, List<MovieModel>>() {
+//                    @Override
+//                    public List<MovieModel> apply(ListingResponse listingResponse) throws Exception {
+//                        return listingResponse.results;
+//                    }
+//                }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
 }
