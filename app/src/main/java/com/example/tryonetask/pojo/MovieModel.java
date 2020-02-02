@@ -1,7 +1,13 @@
 package com.example.tryonetask.pojo;
 
-public class MovieModel {
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "Movies")
+public class MovieModel {
+@PrimaryKey(autoGenerate = true)
+    public int id;
     private String title;
     private String poster_path;
 

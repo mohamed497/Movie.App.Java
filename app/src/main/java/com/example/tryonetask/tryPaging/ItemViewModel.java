@@ -2,6 +2,8 @@ package com.example.tryonetask.tryPaging;
 
 import com.example.tryonetask.pojo.MovieModel;
 
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.LivePagedListBuilder;
@@ -22,6 +24,13 @@ public class ItemViewModel extends ViewModel {
 
     public ItemViewModel() {
     }
+
+
+    // \\
+//    ItemDataSource itemDataSourcee = new ItemDataSource();
+//    public LiveData<List<MovieModel>> getAllMoviesList(){
+//        return itemDataSourcee.getMovies();
+//    }
 
     public void PopularMovies(){
         //getting our data source factory

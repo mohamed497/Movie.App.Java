@@ -1,16 +1,10 @@
 package com.example.tryonetask.repo;
 
-import com.example.tryonetask.data.MovieClient;
 import com.example.tryonetask.data.MovieInterface;
 import com.example.tryonetask.pojo.ListingResponse;
-import com.example.tryonetask.pojo.MovieModel;
-import com.example.tryonetask.tryPaging.RetrofitClient;
-
-import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**

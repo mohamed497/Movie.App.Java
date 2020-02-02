@@ -1,14 +1,21 @@
 package com.example.tryonetask.ui.ViewPager;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.tryCache.RoomViewModel;
 import com.example.tryonetask.tryPaging.ItemAdapter;
+import com.example.tryonetask.tryPaging.ItemDataSource;
 import com.example.tryonetask.tryPaging.ItemViewModel;
 import com.example.tryonetask.ui.main.MovieAdapter;
 import com.example.tryonetask.ui.main.MovieViewModel;
@@ -31,7 +38,8 @@ public class PopularMovieFragment extends BaseFragment{
 //    ItemViewModel itemViewModel;
 
     private static final String TAG = "Tab1Fragment";
-
+    private RoomViewModel roomViewModel;
+    public List<MovieModel> getNewDataFromDB;
 
 
 //    @Nullable
@@ -85,19 +93,45 @@ public class PopularMovieFragment extends BaseFragment{
 
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        super.itemViewModel.PopularMovies();
-        super.itemViewModel.itemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
-            @Override
-            public void onChanged(PagedList<MovieModel> movieModels) {
-                adapter.submitList(movieModels);
-            }
-        });
-        super.recyclerView.setAdapter(super.adapter);
 
+        if(isNetworkConnected(view.getContext()) == true) {
+
+            super.itemViewModel.PopularMovies();
+            super.itemViewModel.itemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
+                @Override
+                public void onChanged(PagedList<MovieModel> movieModels) {
+                    adapter.submitList(movieModels);
+                    getNewDataFromDB = movieModels;
+                    Log.d("zxc","zz" + movieModels);
+                }
+            });
+            super.recyclerView.setAdapter(super.adapter);
+        }
+        else {
+            Toast.makeText(view.getContext(), "No internet found. Showing cached list in the view", Toast.LENGTH_SHORT).show();
+            roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
+            roomViewModel.getmAllMovie().observe(this, new Observer<List<MovieModel>>() {
+                @Override
+                public void onChanged(List<MovieModel> movieModels) {
+                    MovieAdapter movieAdapter = new MovieAdapter();
+                    movieAdapter.setList(movieModels);
+                    Log.d("zxc","hello" + ItemDataSource.getMoviesToDB);
+                    recyclerView.setAdapter(movieAdapter);
+                }
+            });
+        }
+//        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
+//        roomViewModel.getmAllMovie().observe(this, new Observer<List<MovieModel>>() {
+//            @Override
+//            public void onChanged(List<MovieModel> movieModels) {
+//                MovieAdapter movieAdapter = new MovieAdapter();
+//                movieAdapter.setList(movieModels);
+//                recyclerView.setAdapter(movieAdapter);
+//            }
+//        });
     }
 
     @Override
@@ -141,5 +175,12 @@ public class PopularMovieFragment extends BaseFragment{
     public void onStop() {
         itemViewModel.itemPagedList.removeObservers(this);
         super.onStop();
+    }
+
+    Boolean isNetworkConnected(Context context){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+//        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

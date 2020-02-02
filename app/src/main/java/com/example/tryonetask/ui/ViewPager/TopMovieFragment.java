@@ -1,12 +1,18 @@
 package com.example.tryonetask.ui.ViewPager;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.tryCache.RoomViewModel;
 import com.example.tryonetask.tryPaging.ItemAdapter;
 import com.example.tryonetask.tryPaging.ItemViewModel;
 import com.example.tryonetask.ui.main.MovieAdapter;
@@ -32,25 +38,48 @@ public class TopMovieFragment extends BaseFragment {
     private static final String TAG = "Tab2Fragment";
 
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        super.itemViewModel.TopMovies();
-        super.itemViewModel.topItemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
-            @Override
-            public void onChanged(PagedList<MovieModel> movieModels) {
-                adapter.submitList(movieModels);
-            }
-        });
+        // \\
 
-        recyclerView.setAdapter(adapter);
+
+            super.itemViewModel.TopMovies();
+            super.itemViewModel.topItemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
+                @Override
+                public void onChanged(PagedList<MovieModel> movieModels) {
+                    adapter.submitList(movieModels);
+                }
+            });
+
+            recyclerView.setAdapter(adapter);
+
+
+
+
+
+
+
+        // \\
+//        super.itemViewModel.getAllMoviesList().observe(this, new Observer<List<MovieModel>>() {
+//            @Override
+//            public void onChanged(List<MovieModel> movieModels) {
+//                MovieAdapter movieAdapter = new MovieAdapter();
+//                movieAdapter.setList(movieModels);
+//                recyclerView.setAdapter(movieAdapter);
+//            }
+//        });
+
     }
 
     @Override
     public View provideYourFragmentView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_top_movie , parent , false);
+
+
         return view;
     }
 
@@ -106,4 +135,7 @@ public class TopMovieFragment extends BaseFragment {
         itemViewModel.topItemPagedList.removeObservers(this);
         super.onStop();
     }
+
+
+
 }

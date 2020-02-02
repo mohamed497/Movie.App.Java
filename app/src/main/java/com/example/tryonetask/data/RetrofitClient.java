@@ -1,6 +1,4 @@
-package com.example.tryonetask.tryPaging;
-
-import com.example.tryonetask.data.MovieInterface;
+package com.example.tryonetask.data;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

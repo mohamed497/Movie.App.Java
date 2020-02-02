@@ -1,15 +1,14 @@
 package com.example.tryonetask.tryPaging;
 
+import com.example.tryonetask.data.RetrofitClient;
 import com.example.tryonetask.pojo.ListingResponse;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.repo.Repo;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.BiConsumer;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**
