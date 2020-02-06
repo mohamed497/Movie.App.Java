@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.tryCache.RoomViewModel;
 import com.example.tryonetask.tryPaging.ItemAdapter;
+import com.example.tryonetask.tryPaging.ItemDataSource;
 import com.example.tryonetask.tryPaging.ItemViewModel;
 import com.example.tryonetask.ui.main.MovieAdapter;
 import com.example.tryonetask.ui.main.MovieViewModel;
@@ -36,6 +38,7 @@ public class TopMovieFragment extends BaseFragment {
 //    ItemViewModel itemViewModel;
 
     private static final String TAG = "Tab2Fragment";
+    private RoomViewModel roomViewModel;
 
 
 
@@ -43,22 +46,37 @@ public class TopMovieFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // \\
+        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
 
 
+        if(isNetworkConnected(view.getContext())) {
             super.itemViewModel.TopMovies();
             super.itemViewModel.topItemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
                 @Override
                 public void onChanged(PagedList<MovieModel> movieModels) {
                     adapter.submitList(movieModels);
+                    if(movieModels != null){
+                        roomViewModel.insert(movieModels);
+//                        movieDao.insertMovies(movieModels);
+                    }
                 }
             });
 
             recyclerView.setAdapter(adapter);
 
-
-
-
+        }
+        else{
+            Toast.makeText(view.getContext(), "No internet found. Showing cached list in the view", Toast.LENGTH_SHORT).show();
+            roomViewModel.getmAllMovie().observe(this, new Observer<List<MovieModel>>() {
+                @Override
+                public void onChanged(List<MovieModel> movieModels) {
+                    MovieAdapter movieAdapter = new MovieAdapter();
+                    movieAdapter.setList(movieModels);
+                    Log.d("zxc","hello" + ItemDataSource.getMoviesToDB);
+                    recyclerView.setAdapter(movieAdapter);
+                }
+            });
+        }
 
 
 
@@ -132,7 +150,7 @@ public class TopMovieFragment extends BaseFragment {
 //    }
     @Override
     public void onStop() {
-        itemViewModel.topItemPagedList.removeObservers(this);
+        super.itemViewModel.topItemPagedList.removeObservers(this);
         super.onStop();
     }
 

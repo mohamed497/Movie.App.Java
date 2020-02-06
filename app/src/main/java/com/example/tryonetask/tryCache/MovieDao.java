@@ -1,6 +1,7 @@
 package com.example.tryonetask.tryCache;
 
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 
 import java.util.List;
 

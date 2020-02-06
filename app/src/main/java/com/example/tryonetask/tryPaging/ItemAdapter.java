@@ -2,6 +2,7 @@ package com.example.tryonetask.tryPaging;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tryonetask.Detalis.TryReviewActivity;
 import com.example.tryonetask.R;
+import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.pojo.MovieModel;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
@@ -29,6 +34,7 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
     Context mCtx;
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
+    private List<MovieModel> movieList;
 
     public ItemAdapter(Context mCtx){
         super(DIFF_CALLBACK);
@@ -47,6 +53,8 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
         MovieModel movie = getItem(position);
 
+
+
         if(movie != null){
 
             holder.title.setText(movie.getTitle());
@@ -57,7 +65,23 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
             Toast.makeText(mCtx, "Item is null", Toast.LENGTH_LONG).show();
         }
 
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent intent = new Intent(mCtx, SingleMovieActivity.class);
+                intent.putExtra("MOVIE_ID",movie.id);
+                intent.putExtra("movie",movie);
+                intent.putExtra("MOVIE_OVERVIEW",movie.getOverview());
+                intent.putExtra("MOVIE_TITLE",movie.getTitle());
+                intent.putExtra("MOVIE_POSTER",movie.getPoster_path());
+                mCtx.startActivity(intent);
+
+//                Bundle bundle = new Bundle();
+//                SingleMovieFragment singleMovieFragment = new SingleMovieFragment();
+//                singleMovieFragment.setArguments(bundle);
+            }
+        });
 
     }
 
@@ -87,6 +111,23 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
             title = itemView.findViewById(R.id.get_title);
             img = itemView.findViewById(R.id.movie_img);
+
+
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int pos = getAdapterPosition();
+//                    if (pos != RecyclerView.NO_POSITION){
+//                        MovieModel clickedDataItem = movieList.get(pos);
+//                        Intent intent = new Intent(mCtx, SingleMovieActivity.class);
+//                        intent.putExtra("movies", clickedDataItem );
+//
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        mCtx.startActivity(intent);
+//
+//                    }
+//                }
+//            });
         }
     }
 }

@@ -2,6 +2,8 @@ package com.example.tryonetask.repo;
 
 import com.example.tryonetask.data.MovieInterface;
 import com.example.tryonetask.pojo.ListingResponse;
+import com.example.tryonetask.pojo.reviews_data.ListingReviewResponse;
+import com.example.tryonetask.pojo.videos_data.ListingVideoResponse;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,14 +28,22 @@ public class Repo {
         return movieInterface.getNewPopularMovie(firstPage,pageSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-
-//        return RetrofitClient.getInstance().getApi().getNewPopularMovie(firstPage, pageSize)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Single<ListingResponse> topSinlgeMovie(int pageSize , int firstPage){
         return movieInterface.getNewTopMovie(firstPage , pageSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<ListingVideoResponse> getMovieTrailer(int id){
+        return movieInterface.getMovieTrailer(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<ListingReviewResponse> getMovieReviews(int id){
+        return movieInterface.getMovieReview(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

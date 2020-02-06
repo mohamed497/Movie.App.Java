@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.tryPaging.ItemDataSource;
 import com.example.tryonetask.ui.ViewPager.PopularMovieFragment;
+import com.example.tryonetask.ui.main.MainActivity;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * Created by Alaa Moaataz on 2020-02-02.
  */
 
-@Database(entities = MovieModel.class,version = 1,exportSchema = false)
+@Database(entities = {MovieModel.class},version = 1,exportSchema = false)
 
 public abstract class MovieDatabase extends RoomDatabase {
 
@@ -62,14 +63,40 @@ public abstract class MovieDatabase extends RoomDatabase {
 
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(final Void... params) {
 //            movieDao.deleteAllMovies();
-            if(ItemDataSource.getMoviesToDB != null){
+            if(ItemDataSource.getMoviesToDB!= null){
 
             Log.d("zxc","" + ItemDataSource.getMoviesToDB);
             movieDao.insertMovies(ItemDataSource.getMoviesToDB);
             }
+
+
             return null;
         }
     }
+
+//    private static class TopDbAsync extends AsyncTask<Void , Void , Void> {
+//
+//            private final MovieDao movieDao;
+//
+//            TopDbAsync(MovieDatabase db){
+//                movieDao = db.MovieDao();
+//            }
+//
+//
+//
+//            @Override
+//            protected Void doInBackground(final Void... params) {
+//                movieDao.deleteAllMovies();
+//                if(ItemDataSource.getMoviesToDB!= null){
+//
+////            Log.d("zxc","" + ItemDataSource.getMoviesToDB);
+////            movieDao.insertTopMovies(ItemDataSource.getMoviesToDB);
+//                }
+//
+//
+//                return null;
+//            }
+//    }
 }

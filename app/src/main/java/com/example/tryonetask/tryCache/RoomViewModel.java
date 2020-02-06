@@ -3,6 +3,7 @@ package com.example.tryonetask.tryCache;
 import android.app.Application;
 
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class RoomViewModel extends AndroidViewModel {
 
     private MovieCacheRepo movieCacheRepo;
     private LiveData<List<MovieModel>> mAllMovie;
+//    private LiveData<List<TopMovieModel>> mTopMovie;
 
 
 
@@ -28,24 +30,19 @@ public class RoomViewModel extends AndroidViewModel {
         super(application);
         movieCacheRepo = new MovieCacheRepo(application);
         mAllMovie = movieCacheRepo.getAllMovies();
+//        mTopMovie = movieCacheRepo.getTopMovies();
     }
 
     public LiveData<List<MovieModel>> getmAllMovie(){
         return mAllMovie;
     }
 
+
     public void insert(List<MovieModel> movieModel){
         movieCacheRepo.insert(movieModel);
     }
 
 
-//    public MovieDatabase database = null;
 
 
-//    @Override
-//    public void onCreate() {
-//        super.onCreate();
-//        database = Room.databaseBuilder(getApplicationContext(), MovieDatabase.class, "movie_db")
-//                .fallbackToDestructiveMigration().build();
-//    }
 }

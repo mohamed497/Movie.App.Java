@@ -56,7 +56,9 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
                         if (listingResponse != null) {
                             callback.onResult(listingResponse.results, null, FIRST_PAGE + 1);
                             Log.d("zxc","" + listingResponse.results);
-//                            getMoviesToDB = listingResponse.results;
+
+                            getMoviesToDB = listingResponse.results;
+
                                 // \\
 //                            Thread(Runnable {
 //                                roomViewModel.database.MovieDao().deleteAllMovies();
@@ -66,7 +68,6 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
 //                            Thread(Runnable {
 //
 //                            });
-
                         }
                     }
                 }));
@@ -99,7 +100,7 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
                 Integer adjacentKey = (params.key > 1) ? params.key - 1 : null;
                                 if (listingResponse != null) {
                                     callback.onResult(listingResponse.results, adjacentKey);
-                                    getMoviesToDB = listingResponse.results;
+//                                    getMoviesToDB = listingResponse.results;
                                 }
             }
         }));

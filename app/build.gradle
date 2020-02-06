@@ -54,4 +54,7 @@ dependencies {
 
     annotationProcessor "androidx.room:room-compiler:2.2.3"
 
+    implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.5'
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.tryonetask.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Movie;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
@@ -56,6 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         holder.title.setText(movie.getTitle());
         Glide.with(context).load(BASE_URL_IMG+movie.getPoster_path()).into(holder.img);
+
 
     }
 

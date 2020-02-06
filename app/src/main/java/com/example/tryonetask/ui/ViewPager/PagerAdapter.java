@@ -46,26 +46,4 @@ public class PagerAdapter extends FragmentPagerAdapter {
         return mFragmentList.size();
     }
 
-//    @NonNull
-//    @Override
-//    public Fragment getItem(int position) {
-//
-//        switch (position) {
-//            case 0:
-//                PopularMovieFragment popularMovieFragment = new PopularMovieFragment();
-//                return popularMovieFragment;
-//            case 1:
-//                TopMovieFragment topMovieFragment = new TopMovieFragment();
-//                return topMovieFragment;
-//
-//            default:
-//                return null;
-//        }
-//
-//    }
-
-//    @Override
-//    public int getCount() {
-//        return mNoOfTaps;
-//    }
 }

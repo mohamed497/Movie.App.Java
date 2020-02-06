@@ -3,7 +3,10 @@ package com.example.tryonetask.tryPaging;
 import com.example.tryonetask.data.RetrofitClient;
 import com.example.tryonetask.pojo.ListingResponse;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 import com.example.tryonetask.repo.Repo;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
@@ -19,6 +22,7 @@ public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
     public static final int PAGE_SIZE = 20;
     private static final int FIRST_PAGE = 1;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    public static List<TopMovieModel> getTopMoviesToDB;
 
     private Repo repo = new Repo(RetrofitClient.getInstance().getApi());
 
@@ -33,6 +37,8 @@ public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
                     public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
                         if (listingResponse != null) {
                             callback.onResult(listingResponse.results, null, FIRST_PAGE + 1);
+//                            getTopMoviesToDB = listingResponse.results;
+
                         }
                     }
                 })

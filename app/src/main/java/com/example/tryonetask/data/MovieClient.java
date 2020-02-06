@@ -1,5 +1,9 @@
 package com.example.tryonetask.data;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.example.tryonetask.pojo.ListingResponse;
 import com.example.tryonetask.pojo.MovieModel;
 
@@ -11,9 +15,11 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,8 +29,30 @@ public class MovieClient {
     public static MovieInterface movieInterface;
     private static MovieClient INSTANCE;
     int mCurrentPage = 1;
+    Context context;
 
     public MovieClient() {
+//        long cacheSize = (5 * 1024 * 1024);
+//        Cache myCache = new Cache(context.getCacheDir(), cacheSize);
+//
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .cache(myCache)
+//                .addInterceptor(new Interceptor() {
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException {
+//                        Request request = chain.request();
+//                        if(isNetworkConnected(context)){
+//                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build();
+//                        }
+//                        else {
+//                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7)
+//                                    .build();
+//                        }
+//                        return chain.proceed(request);
+//                    }
+//                })
+//                .build();
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(30, TimeUnit.SECONDS)
                 .connectTimeout(30, TimeUnit.SECONDS)
@@ -92,6 +120,13 @@ public class MovieClient {
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    Boolean isNetworkConnected(Context context){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+//        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && cm.getActiveNetworkInfo().isConnected();
     }
 
 

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,9 +32,13 @@ public class MovieCacheRepo {
         return mAllMovies;
     }
 
+
+
     public void insert (List<MovieModel> movie) {
         new insertAsyncTask(movieDao).execute(movie);
     }
+
+
 
     private static class insertAsyncTask extends AsyncTask<List<MovieModel>, Void, Void> {
 
@@ -52,4 +57,6 @@ public class MovieCacheRepo {
             return null;
         }
     }
+
+
 }
