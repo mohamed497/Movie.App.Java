@@ -14,6 +14,7 @@ import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.Detalis.video.VideoAdapter;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.videos_data.VideoModel;
+import com.google.android.youtube.player.YouTubeBaseActivity;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by Alaa Moaataz on 2020-02-05.
  */
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends Fragment  {
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
     TextView movieTitle,movieOverView ;
     ImageView movieImg;
@@ -41,17 +42,17 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details_movie, container, false);
-        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
+//        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
 
 
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-         movieTitleFromActivity = activity.getMovieTitle();
-         movieOverViewFromActivity = activity.getMovieOverView();
-         moviePosterFromActivity = activity.getMoviePoster();
-         movieIdFromActivity = activity.getMovieId();
+//         movieTitleFromActivity = activity.getMovieTitle();
+//         movieOverViewFromActivity = activity.getMovieOverView();
+//         moviePosterFromActivity = activity.getMoviePoster();
+//         movieIdFromActivity = activity.getMovieId();
 
         detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
         detailsViewModel.getMovieTrailer(movieIdFromActivity);

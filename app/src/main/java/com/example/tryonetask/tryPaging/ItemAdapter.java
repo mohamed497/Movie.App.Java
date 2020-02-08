@@ -71,7 +71,7 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
                 Intent intent = new Intent(mCtx, SingleMovieActivity.class);
                 intent.putExtra("MOVIE_ID",movie.id);
-                intent.putExtra("movie",movie);
+//                intent.putExtra("movie",movie);
                 intent.putExtra("MOVIE_OVERVIEW",movie.getOverview());
                 intent.putExtra("MOVIE_TITLE",movie.getTitle());
                 intent.putExtra("MOVIE_POSTER",movie.getPoster_path());

@@ -26,6 +26,7 @@ import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
+import com.example.tryonetask.ui.main.MainActivity;
 import com.example.tryonetask.ui.main.MovieAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,7 +45,7 @@ public class TryReviewActivity extends AppCompatActivity {
 
     TextView textTitle;
     ImageView img;
-    private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
+    private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500/2N9lhZg6VtVJoGCZDjXVC3a81Ea.jpg";
 
 
     private List<MovieModel> movieList;
@@ -53,17 +54,19 @@ public class TryReviewActivity extends AppCompatActivity {
     private AppCompatActivity activity = TryReviewActivity.this;
     private SwipeRefreshLayout swipeContainer;
 
+    List<String> sKey;
+
 
     private static final String PREFS_TAG = "SharedPrefs";
     private static final String PRODUCT_TAG = "MyProduct";
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_try_review);
-
-
 
 
 //        getAllFavorite();
@@ -73,65 +76,68 @@ public class TryReviewActivity extends AppCompatActivity {
 //        img = findViewById(R.id.movie_iimg);
 
 
-//        recyclerView = findViewById(R.id.recyclerReview);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setHasFixedSize(true);
+        recyclerView = findViewById(R.id.recyclerReview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 //
-//        movieList = new ArrayList<>();
+        movieList = new ArrayList<>();
 //
 //        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 //        String name = preferences.getString("MOVIE_TITLE", "");
-//        if(!name.equalsIgnoreCase(""))
-//        {
-////            Toast.makeText(TryReviewActivity.this, "MOVIE TITLE : "+name, Toast.LENGTH_SHORT).show();
+//        if (!name.equalsIgnoreCase("")) {
+//            Toast.makeText(TryReviewActivity.this, "MOVIE TITLE : " + name, Toast.LENGTH_SHORT).show();
 //            String post = preferences.getString("MOVIE_POSTER", "");
 //            MovieAdapter movieAdapter = new MovieAdapter();
-//            movieList.add(new MovieModel(name,post));
+//            movieList.add(new MovieModel(name, post));
 //            movieAdapter.setList(movieList);
 //            recyclerView.setAdapter(movieAdapter);
 ////            Glide.with(this).load(BASE_URL_IMG+post).into(img);
 //
 //        }
 
-        getDataFromSharedPreferences();
-
-
-
-//        initViews();
-//        recyclerView = findViewById(R.id.recyclerReview);
-//        MovieAdapter movieAdapter = new MovieAdapter(this);
-//        movieAdapter.setList(movieList);
-//        recyclerView.setAdapter(movieAdapter);
-
-
-//        recyclerView = findViewById(R.id.recyclerReview);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setHasFixedSize(true);
+        sKey = new ArrayList<>();
+//        SharedPreferences mSharedPreference1 =   PreferenceManager.getDefaultSharedPreferences(activity);
+//        sKey.clear();
+//        int size = mSharedPreference1.getInt("Status_size", 0);
 //
-//        Bundle intent = getIntent().getExtras();
-//        movieId = intent.getInt("MOVIE_ID");
-//        overView = intent.getString("MOVIE_OVERVIEW");
-//        Log.d("zxc","moview OverView : " +overView);
-//        movieTitle = intent.getString("MOVIE_TITLE");
-//        Log.d("zxc","movie id : "+movieId);
-//        Log.d("zxc","movie title : "+movieTitle);
+//        for(int i=0;i<size;i++)
+//        {
+//            sKey.add(mSharedPreference1.getString("Status_" + i, null));
+//            Log.d("zxcasd","ZZ"+sKey);
 //
-//        poster = intent.getString("MOVIE_POSTER");
-//        Log.d("zxc","movie poster : "+poster);
-//
-//        key = intent.getString("MOVIE_KEY");
-//        Log.d("zxc", "movie key : "+key);
-//
-//        detailsViewModel.getMovieReview(movieId);
-//        detailsViewModel.reviewMovieMutableLiveData
-//                .observe(this, new Observer<List<ReviewModel>>() {
-//                    @Override
-//                    public void onChanged(List<ReviewModel> reviewModels) {
-//                        ReviewAdapter reviewAdapter = new ReviewAdapter();
-//                        reviewAdapter.setList(reviewModels);
-//                        recyclerView.setAdapter(reviewAdapter);
-//                    }
-//                });
+//        }
+
+
+        final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Set", "");
+        if (json.isEmpty()) {
+            Toast.makeText(TryReviewActivity.this, "There is something error", Toast.LENGTH_LONG).show();
+        } else {
+            Type type = new TypeToken<List<String>>() {
+            }.getType();
+            List<String> arrPackageData = gson.fromJson(json, type);
+            for(String data:arrPackageData) {
+//                textTitle.setText(data);
+                MovieAdapter movieAdapter = new MovieAdapter();
+            movieList.add(new MovieModel(data, BASE_URL_IMG));
+            movieAdapter.setList(movieList);
+            recyclerView.setAdapter(movieAdapter);
+            }
+
+        }
+    }
+
+    public void loadArray()
+    {
+        SharedPreferences mSharedPreference1 =   PreferenceManager.getDefaultSharedPreferences(activity);
+        sKey.clear();
+        int size = mSharedPreference1.getInt("Status_size", 0);
+
+        for(int i=0;i<size;i++)
+        {
+            sKey.add(mSharedPreference1.getString("Status_" + i, null));
+        }
 
     }
 
@@ -176,73 +182,4 @@ public class TryReviewActivity extends AppCompatActivity {
     }
 
 
-//    private void initViews(){
-//
-//        recyclerView = (RecyclerView) findViewById(R.id.recyclerReview);
-//
-//        movieList = new ArrayList<>();
-//        adapter = new MovieAdapter(this);
-//        adapter.setList(movieList);
-//
-//
-//
-//        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        } else {
-//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        }
-//
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
-//        favoriteDbHelper = new FavoriteDbHelper(activity);
-//
-//
-//        swipeContainer = findViewById(R.id.main_content);
-//        swipeContainer.setColorSchemeResources(android.R.color.holo_orange_dark);
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-//            @Override
-//            public void onRefresh(){
-//                initViews();
-//                Toast.makeText(TryReviewActivity.this, "Movies Refreshed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-////        checkSortOrder();
-//
-//    }
-
-//    @Override
-//    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//        checkSortOrder();
-//    }
-
-//    private void checkSortOrder() {
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        String sortOrder = preferences.getString("FAVORITE"," ");
-//        initViews2();
-//
-//    }
-
-//    private void initViews2() {
-//
-//        recyclerView = findViewById(R.id.recyclerReview);
-//
-//        movieList = new ArrayList<>();
-//        adapter = new MovieAdapter(this);
-//        adapter.setList(movieList);
-//
-//        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        } else {
-//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        }
-//
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
-//        favoriteDbHelper = new FavoriteDbHelper(activity);
-//
-//        getAllFavorite();
-//    }
 }

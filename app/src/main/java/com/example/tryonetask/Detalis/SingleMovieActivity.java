@@ -32,6 +32,11 @@ import com.example.tryonetask.ui.ViewPager.TopMovieFragment;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.api.services.youtube.YouTube;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -41,9 +46,13 @@ import org.json.JSONException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class SingleMovieActivity extends AppCompatActivity {
+public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener
+,YouTubePlayer.PlaybackEventListener,YouTubePlayer.PlayerStateChangeListener{
+
 
 
     int movieId;
@@ -52,18 +61,24 @@ public class SingleMovieActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
 
+//    SharedPreferences shared;
+    ArrayList<String> arrPackage;
     List<MovieModel> movie;
+
+
     MovieModel movieModel;
     MovieModel favorite;
     private FavoriteDbHelper favoriteDbHelper;
-    private final AppCompatActivity activity = SingleMovieActivity.this;
+//    private final AppCompatActivity activity = SingleMovieActivity.this;
 
 
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     Button btn;
 
-
+    YouTubePlayerView playerView;
+    String API_KEY = "AIzaSyAV8kimexMX2qBKmbN2zK8qgVQ5Zb1klOI";
+    String VIDEO_ID = "Kopyc23VfSw";
 
     private static final String PREFS_TAG = "SharedPrefs";
     private static final String PRODUCT_TAG = "MyProduct";
@@ -73,37 +88,52 @@ public class SingleMovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_movie);
 
+        playerView = findViewById(R.id.playerview);
+        playerView.initialize(API_KEY,this);
 //        recyclerView = findViewById(R.id.recycler);
 //        recyclerView = findViewById(R.id.recyclerReview);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setHasFixedSize(true);
 
-        Intent intentThatStartedThisActivity = getIntent();
-        if (intentThatStartedThisActivity.hasExtra("movies")){
-            movie = getIntent().getParcelableExtra("movies");
-            overView = movieModel.getOverview();
-            Log.d("zxc","moview OverView : " +overView);
-
-        }
-
-//        Bundle intent = getIntent().getExtras();
-//        if (intent != null) {
-//            movieId = intent.getInt("MOVIE_ID");
-//            overView = intent.getString("MOVIE_OVERVIEW");
+//        Intent intentThatStartedThisActivity = getIntent();
+//        if (intentThatStartedThisActivity.hasExtra("movies")){
+//            movieModel = getIntent().getParcelableExtra("movies");
+//            overView = movieModel.getOverview();
 //            Log.d("zxc","moview OverView : " +overView);
-//            movieTitle = intent.getString("MOVIE_TITLE");
-//            Log.d("zxc","movie id : "+movieId);
-//            Log.d("zxc","movie title : "+movieTitle);
 //
-//            poster = intent.getString("MOVIE_POSTER");
-//            Log.d("zxc","movie poster : "+poster);
 //        }
 
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putString("MOVIE_TITLE",movieTitle);
-//        editor.putString("MOVIE_POSTER",poster);
-//        editor.apply();
+        Bundle intent = getIntent().getExtras();
+        if (intent != null) {
+            movieId = intent.getInt("MOVIE_ID");
+            overView = intent.getString("MOVIE_OVERVIEW");
+            Log.d("zxc","moview OverView : " +overView);
+            movieTitle = intent.getString("MOVIE_TITLE");
+            Log.d("zxc","movie id : "+movieId);
+            Log.d("zxc","movie title : "+movieTitle);
+
+            poster = intent.getString("MOVIE_POSTER");
+            Log.d("zxc","movie poster : "+poster);
+        }
+
+
+//        shared = getSharedPreferences("App_settings", MODE_PRIVATE);
+        arrPackage = new ArrayList<>();
+        arrPackage.add(movieTitle);
+        final SharedPreferences sharedPreferences = getSharedPreferences("USER",MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = gson.toJson(arrPackage);
+        SharedPreferences.Editor editor1 = sharedPreferences.edit();
+        editor1.putString("Set",json );
+        editor1.commit();
+
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("MOVIE_TITLE",movieTitle);
+        editor.putString("MOVIE_POSTER",poster);
+        editor.apply();
 
 
 
@@ -140,7 +170,7 @@ public class SingleMovieActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(activity,TryReviewActivity.class);
+                Intent intent1 = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
                 startActivity(intent1);
             }
         });
@@ -198,42 +228,145 @@ public class SingleMovieActivity extends AppCompatActivity {
 //        TabLayout tabLayout = findViewById(R.id.tab_lLayOut);
 //        tabLayout.setupWithViewPager(mViewPager);
 
-        setDataFromSharedPreferences(movie);
+//        setDataFromSharedPreferences(movie);
+
+//        saveArray();
 
     }
 
-    private void setDataFromSharedPreferences(List<MovieModel> movie){
-        Gson gson = new Gson();
-//        String jsonCurProduct = gson.toJson(movie);
-        String jsonCurProduct = gson.toJson(movie);
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        youTubePlayer.setPlayerStateChangeListener(this);
+        youTubePlayer.setPlaybackEventListener(this);
 
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putString(PRODUCT_TAG, jsonCurProduct);
-        editor.commit();
+        if(!b){
+            youTubePlayer.cueVideo(VIDEO_ID);
+        }
     }
 
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
-    public void addObject(MovieModel movie){
-        Gson gson = new Gson();
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, activity.MODE_PRIVATE);
-        String jsonSaved = sharedPref.getString(PRODUCT_TAG, "");
-        String jsonNewproductToAdd = gson.toJson(movie);
+    }
 
-        JSONArray jsonArrayProduct= new JSONArray();
-        if(jsonSaved.length()!=0){
-            try {
-                jsonArrayProduct.put(new JSONArray(jsonSaved)) ;
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    @Override
+    public void onPlaying() {
+
+    }
+
+    @Override
+    public void onLoaded(String s) {
+
+    }
+
+    @Override
+    public void onLoading() {
+
+    }
+
+    @Override
+    public void onVideoStarted() {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+    }
+
+    @Override
+    public void onAdStarted() {
+
+    }
+
+    @Override
+    public void onBuffering(boolean b) {
+
+    }
+
+    @Override
+    public void onStopped() {
+
+    }
+
+    @Override
+    public void onPaused() {
+
+    }
+
+    @Override
+    public void onSeekTo(int i) {
+
+    }
+
+    public boolean saveArray()
+    {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor mEdit1 = sp.edit();
+        /* sKey is an array */
+        mEdit1.putInt("Status_size", arrPackage.size());
+
+        for(int i=0;i<arrPackage.size();i++)
+        {
+            mEdit1.remove("Status_" + i);
+            mEdit1.putString("Status_" + i, arrPackage.get(i));
         }
 
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(PRODUCT_TAG, jsonNewproductToAdd);
-        editor.commit();
+        return mEdit1.commit();
     }
+
+//    private void packagesharedPreferences() {
+//        SharedPreferences.Editor editor = shared.edit();
+//        Set<String> set = new HashSet<String>();
+//        set.addAll(arrPackage);
+//        editor.putStringSet("DATE_LIST", set);
+//        editor.apply();
+//        Log.d("storesharedPreferences",""+set);
+//    }
+
+
+
+
+
+
+
+//    private void setDataFromSharedPreferences(List<MovieModel> movie){
+//        Gson gson = new Gson();
+////        String jsonCurProduct = gson.toJson(movie);
+//        String jsonCurProduct = gson.toJson(movie);
+//
+//        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, activity.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//
+//        editor.putString(PRODUCT_TAG, jsonCurProduct);
+//        editor.commit();
+//    }
+
+
+//    public void addObject(MovieModel movie){
+//        Gson gson = new Gson();
+//        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, activity.MODE_PRIVATE);
+//        String jsonSaved = sharedPref.getString(PRODUCT_TAG, "");
+//        String jsonNewproductToAdd = gson.toJson(movie);
+//
+//        JSONArray jsonArrayProduct= new JSONArray();
+//        if(jsonSaved.length()!=0){
+//            try {
+//                jsonArrayProduct.put(new JSONArray(jsonSaved)) ;
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString(PRODUCT_TAG, jsonNewproductToAdd);
+//        editor.commit();
+//    }
 
 
 
@@ -254,26 +387,13 @@ public class SingleMovieActivity extends AppCompatActivity {
 
 
 
-    private void saveFavorite() {
 
-        favoriteDbHelper = new FavoriteDbHelper(activity);
-        favorite = new MovieModel();
-
-
-        favorite.id = movieId;
-        favorite.setTitle(movieTitle);
-        favorite.setPoster_path(poster);
-        favorite.setOverview(overView);
-
-        favoriteDbHelper.addFavorite(favorite);
-    }
-
-    private void setupViewPager(ViewPager viewPager){
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ReviewsFragment(),"Reviews");
-        adapter.addFragment(new DetailsFragment(),"Details");
-        viewPager.setAdapter(adapter);
-    }
+//    private void setupViewPager(ViewPager viewPager){
+//        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+//        adapter.addFragment(new ReviewsFragment(),"Reviews");
+//        adapter.addFragment(new DetailsFragment(),"Details");
+//        viewPager.setAdapter(adapter);
+//    }
 
     public String getMovieTitle() {
         return movieTitle;
