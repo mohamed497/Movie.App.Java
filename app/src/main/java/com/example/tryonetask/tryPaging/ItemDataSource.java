@@ -31,20 +31,7 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
     private Repo repo = new Repo(RetrofitClient.getInstance().getApi());
 
 
-    // \\
-//    RoomViewModel roomViewModel = new RoomViewModel();
-//
-//    LiveData<List<MovieModel>> getMovies(){
-//        return roomViewModel.database.MovieDao().getMovies();
-//    }
 
-//    public ItemDataSource(Repo repo) {
-//        this.repo = repo;
-//    }
-
-//    public ItemDataSource() {
-//
-//    }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, MovieModel> callback) {
@@ -59,15 +46,6 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
 
                             getMoviesToDB = listingResponse.results;
 
-                                // \\
-//                            Thread(Runnable {
-//                                roomViewModel.database.MovieDao().deleteAllMovies();
-//                                roomViewModel.database.MovieDao().insertMovies(listingResponse.results);
-//                            });
-
-//                            Thread(Runnable {
-//
-//                            });
                         }
                     }
                 }));
@@ -78,21 +56,6 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, MovieModel> callback) {
 
-//        compositeDisposable.add(
-//                RetrofitClient.getInstance()
-//                        .getApi().getNewPopularMovie(params.key,PAGE_SIZE)
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-//                            @Override
-//                            public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-//
-//                                Integer adjacentKey = (params.key > 1) ? params.key - 1 : null;
-//                                if (listingResponse != null) {
-//                                    callback.onResult(listingResponse.results, adjacentKey);
-//                                }
-//                            }
-//                        }));
         compositeDisposable.add(repo.movieSingle(params.key, PAGE_SIZE)
         .subscribe(new BiConsumer<ListingResponse, Throwable>() {
             @Override
@@ -110,22 +73,6 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, MovieModel> callback) {
 
-
-//        compositeDisposable.add(RetrofitClient.getInstance()
-//                .getApi().getNewPopularMovie(params.key,PAGE_SIZE)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-//                    @Override
-//                    public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-//                        if (listingResponse != null) {
-////                            Integer key = listingResponse != null ? params.key + 1 : null;
-//                            Integer key =  params.key + 1;
-//
-//                            callback.onResult(listingResponse.results, key);
-//                        }
-//                    }
-//                }));
 
         compositeDisposable.add(repo.movieSingle(params.key , PAGE_SIZE)
         .subscribe(new BiConsumer<ListingResponse, Throwable>() {

@@ -28,9 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemViewHolder> {
 
-//    protected ItemAdapter(@NonNull DiffUtil.ItemCallback<MovieModel> diffCallback) {
-//        super(diffCallback);
-//    }
+
 
     Context mCtx;
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
@@ -73,9 +71,6 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mCtx.startActivity(intent);
 
-//                Bundle bundle = new Bundle();
-//                SingleMovieFragment singleMovieFragment = new SingleMovieFragment();
-//                singleMovieFragment.setArguments(bundle);
                 }
             });
 
@@ -115,22 +110,6 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
             title = itemView.findViewById(R.id.get_title);
             img = itemView.findViewById(R.id.movie_img);
 
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    int pos = getAdapterPosition();
-//                    if (pos != RecyclerView.NO_POSITION){
-//                        MovieModel clickedDataItem = movieList.get(pos);
-//                        Intent intent = new Intent(mCtx, SingleMovieActivity.class);
-//                        intent.putExtra("movies", clickedDataItem );
-//
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        mCtx.startActivity(intent);
-//
-//                    }
-//                }
-//            });
         }
     }
 }

@@ -28,11 +28,6 @@ public class ItemViewModel extends ViewModel {
     }
 
 
-    // \\
-//    ItemDataSource itemDataSourcee = new ItemDataSource();
-//    public LiveData<List<MovieModel>> getAllMoviesList(){
-//        return itemDataSourcee.getMovies();
-//    }
 
     public void PopularMovies(){
         //getting our data source factory

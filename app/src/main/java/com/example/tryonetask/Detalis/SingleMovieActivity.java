@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tryonetask.Detalis.favorite_movie.FavoriteDbHelper;
 import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
 import com.example.tryonetask.Detalis.video.VideoAdapter;
 import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
@@ -72,9 +71,6 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
     private PagerAdapter mPagerAdapter;
     Button btn;
 
-    private static final String PREFS_TAG = "SharedPrefs";
-    private static final String PRODUCT_TAG = "MyProduct";
-
     YouTubePlayerView playerView;
     String API_KEY = "AIzaSyAV8kimexMX2qBKmbN2zK8qgVQ5Zb1klOI";
     String VIDEO_ID = "Kopyc23VfSw";
@@ -82,7 +78,6 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
     public static final String PREFS_NAME = "PRODUCT_APP";
     public static final String FAVORITES = "Product_Favorite";
 
-    TextView v;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,40 +166,6 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 //                .commit();
 
 
-//        detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
-//        detailsViewModel.getMovieReview(movieId);
-//        detailsViewModel.reviewMovieMutableLiveData.observe(this, new Observer<List<ReviewModel>>() {
-//            @Override
-//            public void onChanged(List<ReviewModel> reviewModels) {
-//                ReviewAdapter reviewAdapter = new ReviewAdapter();
-//                reviewAdapter.setList(reviewModels);
-//                recyclerView.setAdapter(reviewAdapter);
-//            }
-//        });
-
-
-
-
-
-//        detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
-//        detailsViewModel.getMovieTrailer(movieId);
-//        detailsViewModel.videoMovieMutableLiveData.observe(this, new Observer<List<VideoModel>>() {
-//            @Override
-//            public void onChanged(List<VideoModel> videoModels) {
-//                VideoAdapter videoAdapter = new  VideoAdapter();
-//                videoAdapter.setList(videoModels);
-//                recyclerView.setAdapter(videoAdapter);
-//            }
-//        });
-
-
-
-//        Bundle bundle=new Bundle();
-//        bundle.putString("message", movieTitle);
-//        //set Fragmentclass Arguments
-//        SingleMovieFragment fragobj=new SingleMovieFragment();
-//        fragobj.setArguments(bundle);
-
 //        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 //        mViewPager = findViewById(R.id.viewPager);
 //        setupViewPager(mViewPager);
@@ -258,6 +219,7 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 
         } else
             return null;
+        Log.d("ww","movie ! !"+(ArrayList<MovieModel>) favorites);
         return (ArrayList<MovieModel>) favorites;
     }
 

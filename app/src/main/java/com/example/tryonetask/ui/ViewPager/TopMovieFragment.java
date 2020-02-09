@@ -33,13 +33,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TopMovieFragment extends BaseFragment {
 
-//    MovieViewModel movieViewModel;
-//    RecyclerView recyclerView;
-//    ItemViewModel itemViewModel;
-
     private static final String TAG = "Tab2Fragment";
     private RoomViewModel roomViewModel;
-
 
 
     @Override
@@ -78,18 +73,6 @@ public class TopMovieFragment extends BaseFragment {
             });
         }
 
-
-
-        // \\
-//        super.itemViewModel.getAllMoviesList().observe(this, new Observer<List<MovieModel>>() {
-//            @Override
-//            public void onChanged(List<MovieModel> movieModels) {
-//                MovieAdapter movieAdapter = new MovieAdapter();
-//                movieAdapter.setList(movieModels);
-//                recyclerView.setAdapter(movieAdapter);
-//            }
-//        });
-
     }
 
     @Override
@@ -100,60 +83,10 @@ public class TopMovieFragment extends BaseFragment {
 
         return view;
     }
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//
-//        View view = inflater.inflate(R.layout.fragment_top_movie , container , false);
-//
-//
-//        recyclerView = view.findViewById(R.id.recycler);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-//        recyclerView.setHasFixedSize(true);
-//
-//        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
-//        itemViewModel.TopMovies();
-//
-//        final ItemAdapter adapter = new ItemAdapter(view.getContext());
-//
-//        itemViewModel.topItemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
-//            @Override
-//            public void onChanged(PagedList<MovieModel> movieModels) {
-//                adapter.submitList(movieModels);
-//            }
-//        });
-//
-//        recyclerView.setAdapter(adapter);
-//
-//
-////        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-////        movieViewModel.getTopMovie();
-////
-////        recyclerView = view.findViewById(R.id.recycler);
-////        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-////        recyclerView.setHasFixedSize(true);
-////
-////        movieViewModel.topMovieMutableLiveData.observe(this, new Observer<List<MovieModel>>() {
-////            @Override
-////            public void onChanged(List<MovieModel> movieModels) {
-////                if(movieModels!=null) {
-////                    MovieAdapter movieAdapter = new MovieAdapter();
-////                    movieAdapter.setList(movieModels);
-////                    recyclerView.setAdapter(movieAdapter);
-////                }
-////            }
-////        });
-//
-//        return view;
-//
-//    }
     @Override
     public void onStop() {
         super.itemViewModel.topItemPagedList.removeObservers(this);
         super.onStop();
     }
-
-
 
 }

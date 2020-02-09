@@ -48,25 +48,4 @@ public class Repo {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-//    public Single<List<MovieModel>> modelSingle(){
-//        return movieInterface.getPopularMovie()
-//                .map(new Function<ListingResponse, List<MovieModel>>() {
-//                    @Override
-//                    public List<MovieModel> apply(ListingResponse listingResponse) throws Exception {
-//                        return listingResponse.results;
-//                    }
-//                }).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread());
-//    }
-
-//    public static Single<List<MovieModel>> getPopularMovies(){
-//        return MovieClient.movieInterface.getPopularMovie()
-//                .map(new Function<ListingResponse, List<MovieModel>>() {
-//                    @Override
-//                    public List<MovieModel> apply(ListingResponse listingResponse) throws Exception {
-//                        return listingResponse.results;
-//                    }
-//                }).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread());
-//    }
 }

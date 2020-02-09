@@ -42,31 +42,6 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = provideYourFragmentView(inflater,container,savedInstanceState);
 
-
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FragmentManager fm = getFragmentManager();
-//                FragmentTransaction transaction = fm.beginTransaction();
-//                SingleMovieFragment singleMovieFragment = new SingleMovieFragment();
-//                transaction.add(R.id.fragment_container, singleMovieFragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
-//        recyclerView = view.findViewById(R.id.recycler);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-//        recyclerView.setHasFixedSize(true);
-
-
-//        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
-
-//        adapter = new ItemAdapter(view.getContext());
-
-//        recyclerView.setAdapter(adapter);
-
-
-
         return view;
     }
 
@@ -92,7 +67,6 @@ public abstract class BaseFragment extends Fragment {
     Boolean isNetworkConnected(Context context){
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-//        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return activeNetwork != null && cm.getActiveNetworkInfo().isConnected();
     }
 

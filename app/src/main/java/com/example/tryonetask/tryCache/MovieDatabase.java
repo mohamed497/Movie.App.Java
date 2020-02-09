@@ -64,7 +64,6 @@ public abstract class MovieDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params) {
-//            movieDao.deleteAllMovies();
             if(ItemDataSource.getMoviesToDB!= null){
 
             Log.d("zxc","" + ItemDataSource.getMoviesToDB);
@@ -76,27 +75,5 @@ public abstract class MovieDatabase extends RoomDatabase {
         }
     }
 
-//    private static class TopDbAsync extends AsyncTask<Void , Void , Void> {
-//
-//            private final MovieDao movieDao;
-//
-//            TopDbAsync(MovieDatabase db){
-//                movieDao = db.MovieDao();
-//            }
-//
-//
-//
-//            @Override
-//            protected Void doInBackground(final Void... params) {
-//                movieDao.deleteAllMovies();
-//                if(ItemDataSource.getMoviesToDB!= null){
-//
-////            Log.d("zxc","" + ItemDataSource.getMoviesToDB);
-////            movieDao.insertTopMovies(ItemDataSource.getMoviesToDB);
-//                }
-//
-//
-//                return null;
-//            }
-//    }
+
 }

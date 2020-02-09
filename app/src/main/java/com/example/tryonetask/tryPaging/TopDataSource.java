@@ -44,34 +44,7 @@ public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
                 })
         );
 
-//        compositeDisposable.add(
-//                RetrofitClient.getInstance()
-//                        .getApi().getNewTopMovie(FIRST_PAGE,PAGE_SIZE)
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-//                            @Override
-//                            public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-//
-//                                if (listingResponse != null) {
-//                                    callback.onResult(listingResponse.results, null, FIRST_PAGE + 1);
-//                                }
-//                            }
-//                        }));
 
-//                .enqueue(new Callback<ListingResponse>() {
-//                    @Override
-//                    public void onResponse(Call<ListingResponse> call, Response<ListingResponse> response) {
-//                        if (response.body() != null) {
-//                            callback.onResult(response.body().results, null, FIRST_PAGE + 1);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ListingResponse> call, Throwable t) {
-//
-//                    }
-//                });
     }
 
 
@@ -89,42 +62,7 @@ public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
             }
         }));
 
-//        compositeDisposable.add(RetrofitClient.getInstance()
-//                .getApi().getNewTopMovie(params.key,PAGE_SIZE)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-//                    @Override
-//                    public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-//
-//                        Integer adjacentKey = (params.key > 1) ? params.key - 1 : null;
-//                        if (listingResponse != null) {
-//                            callback.onResult(listingResponse.results, adjacentKey);
-//                        }
-//                    }
-//                }));
 
-//                .enqueue(new Callback<ListingResponse>() {
-//                    @Override
-//                    public void onResponse(Call<ListingResponse> call, Response<ListingResponse> response) {
-//                        //if the current page is greater than one
-//                        //we are decrementing the page number
-//                        //else there is no previous page
-//                        Integer adjacentKey = (params.key > 1) ? params.key - 1 : null;
-//                        if (response.body() != null) {
-//
-//                            //passing the loaded data
-//                            //and the previous page key
-//                            callback.onResult(response.body().results, adjacentKey);
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ListingResponse> call, Throwable t) {
-//
-//                    }
-//                });
 
     }
 
@@ -143,43 +81,6 @@ public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
                 }
             }
         }));
-
-//        compositeDisposable.add(RetrofitClient.getInstance()
-//                .getApi().getNewTopMovie(params.key,PAGE_SIZE)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-//                    @Override
-//                    public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-//                        if (listingResponse != null) {
-////                            Integer key = listingResponse != null ? params.key + 1 : null;
-//                            Integer key =  params.key + 1;
-//
-//                            callback.onResult(listingResponse.results, key);
-//                        }
-//                    }
-//                }));
-
-//                .enqueue(new Callback<ListingResponse>() {
-//                    @Override
-//                    public void onResponse(Call<ListingResponse> call, Response<ListingResponse> response) {
-//
-//                        if (response.body() != null) {
-//                            //if the response has next page
-//                            //incrementing the next page number
-//                            Integer key = response.body().has_more ? params.key + 1 : null;
-//                            Integer key = response.body() != null ? params.key + 1 : null;
-//
-//                            //passing the loaded data and next page value
-//                            callback.onResult(response.body().results, key);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ListingResponse> call, Throwable t) {
-//
-//                    }
-//                });
 
 
     }

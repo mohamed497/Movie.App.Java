@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.tryonetask.Detalis.favorite_movie.FavoriteDbHelper;
 import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
@@ -50,7 +49,6 @@ public class TryReviewActivity extends AppCompatActivity {
 
 
     private List<MovieModel> movieList;
-    private FavoriteDbHelper favoriteDbHelper;
     private MovieAdapter adapter;
     private AppCompatActivity activity = TryReviewActivity.this;
     private SwipeRefreshLayout swipeContainer;
@@ -98,16 +96,7 @@ public class TryReviewActivity extends AppCompatActivity {
 //        }
 
         sKey = new ArrayList<>();
-//        SharedPreferences mSharedPreference1 =   PreferenceManager.getDefaultSharedPreferences(activity);
-//        sKey.clear();
-//        int size = mSharedPreference1.getInt("Status_size", 0);
-//
-//        for(int i=0;i<size;i++)
-//        {
-//            sKey.add(mSharedPreference1.getString("Status_" + i, null));
-//            Log.d("zxcasd","ZZ"+sKey);
-//
-//        }
+
 
 
 //        final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
@@ -129,13 +118,16 @@ public class TryReviewActivity extends AppCompatActivity {
 //
 //        }
 //      ArrayList arr = new ArrayList<>();
-        List<MovieModel> movie = new ArrayList<>();
+        List<MovieModel> movie;
 
 //        List<MovieModel> z;
 //        singleMovieActivity.getFavorites(TryReviewActivity.this);
         movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
+        if (movie != null){
+            Log.d("zxc", "movie : "+movie.get(0));
 
-        Log.d("zxc", "movie : "+movie.get(0));
+        }
+
 //        String title = movie.get(0).getTitle();
 //        String poster = movie.get(0).getPoster_path();
 //        movieList.add(new MovieModel(title,poster));

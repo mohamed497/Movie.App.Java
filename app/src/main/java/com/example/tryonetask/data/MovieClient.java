@@ -32,26 +32,6 @@ public class MovieClient {
     Context context;
 
     public MovieClient() {
-//        long cacheSize = (5 * 1024 * 1024);
-//        Cache myCache = new Cache(context.getCacheDir(), cacheSize);
-//
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-//                .cache(myCache)
-//                .addInterceptor(new Interceptor() {
-//                    @Override
-//                    public Response intercept(Chain chain) throws IOException {
-//                        Request request = chain.request();
-//                        if(isNetworkConnected(context)){
-//                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build();
-//                        }
-//                        else {
-//                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7)
-//                                    .build();
-//                        }
-//                        return chain.proceed(request);
-//                    }
-//                })
-//                .build();
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -87,16 +67,6 @@ public class MovieClient {
     }
 
 
-//    public Single<List<MovieModel>> getPopularMovies() {
-//        return movieInterface.getPopularMovie()
-//                .map(new Function<ListingResponse, List<MovieModel>>() {
-//                    @Override
-//                    public List<MovieModel> apply(ListingResponse listingResponse) throws Exception {
-//                        return listingResponse.results;
-//                    }
-//                }).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread());
-//    }
 //
     public Single<List<MovieModel>> getPopularMovies() {
 //        mCurrentPage = mCurrentPage + 1;
