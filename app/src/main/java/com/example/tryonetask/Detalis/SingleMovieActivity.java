@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tryonetask.Detalis.favorite_movie.FavoriteDbHelper;
 import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
@@ -38,13 +40,16 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.api.services.youtube.YouTube;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -56,19 +61,10 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 
 
     int movieId;
-    String movieTitle,overView,poster;
-    DetailsViewModel detailsViewModel;
+    String movieTitle,overView,poster,imgPoster;
     RecyclerView recyclerView;
 
-
-//    SharedPreferences shared;
-    ArrayList<String> arrPackage;
-    List<MovieModel> movie;
-
-
     MovieModel movieModel;
-    MovieModel favorite;
-    private FavoriteDbHelper favoriteDbHelper;
 //    private final AppCompatActivity activity = SingleMovieActivity.this;
 
 
@@ -76,13 +72,17 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
     private PagerAdapter mPagerAdapter;
     Button btn;
 
+    private static final String PREFS_TAG = "SharedPrefs";
+    private static final String PRODUCT_TAG = "MyProduct";
+
     YouTubePlayerView playerView;
     String API_KEY = "AIzaSyAV8kimexMX2qBKmbN2zK8qgVQ5Zb1klOI";
     String VIDEO_ID = "Kopyc23VfSw";
 
-    private static final String PREFS_TAG = "SharedPrefs";
-    private static final String PRODUCT_TAG = "MyProduct";
+    public static final String PREFS_NAME = "PRODUCT_APP";
+    public static final String FAVORITES = "Product_Favorite";
 
+    TextView v;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,48 +95,38 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setHasFixedSize(true);
 
-//        Intent intentThatStartedThisActivity = getIntent();
-//        if (intentThatStartedThisActivity.hasExtra("movies")){
-//            movieModel = getIntent().getParcelableExtra("movies");
-//            overView = movieModel.getOverview();
-//            Log.d("zxc","moview OverView : " +overView);
-//
-//        }
-
-        Bundle intent = getIntent().getExtras();
-        if (intent != null) {
-            movieId = intent.getInt("MOVIE_ID");
-            overView = intent.getString("MOVIE_OVERVIEW");
+        Intent intentThatStartedThisActivity = getIntent();
+        if (intentThatStartedThisActivity.hasExtra("movie")){
+            movieModel = getIntent().getParcelableExtra("movie");
+            movieId = movieModel.id;
+            movieTitle = movieModel.getTitle();
+            poster = movieModel.getPoster_path();
+            overView = movieModel.getOverview();
             Log.d("zxc","moview OverView : " +overView);
-            movieTitle = intent.getString("MOVIE_TITLE");
-            Log.d("zxc","movie id : "+movieId);
             Log.d("zxc","movie title : "+movieTitle);
+            Log.d("zxc","movie id : "+movieId);
 
-            poster = intent.getString("MOVIE_POSTER");
-            Log.d("zxc","movie poster : "+poster);
+
+        }
+        else{
+            Toast.makeText(this, "No API Data", Toast.LENGTH_SHORT).show();
         }
 
 
-//        shared = getSharedPreferences("App_settings", MODE_PRIVATE);
-        arrPackage = new ArrayList<>();
-        arrPackage.add(movieTitle);
-        final SharedPreferences sharedPreferences = getSharedPreferences("USER",MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = gson.toJson(arrPackage);
-        SharedPreferences.Editor editor1 = sharedPreferences.edit();
-        editor1.putString("Set",json );
-        editor1.commit();
-
-
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("MOVIE_TITLE",movieTitle);
-        editor.putString("MOVIE_POSTER",poster);
-        editor.apply();
-
-
-
+//        Bundle intent = getIntent().getExtras();
+//        if (intent != null) {
+//
+//            movieId = intent.getInt("MOVIE_ID");
+//            overView = intent.getString("MOVIE_OVERVIEW");
+//            Log.d("zxc","moview OverView : " +overView);
+//            movieTitle = intent.getString("MOVIE_TITLE");
+//            Log.d("zxc","movie id : "+movieId);
+//            Log.d("zxc","movie title : "+movieTitle);
+//
+//            poster = intent.getString("MOVIE_POSTER");
+//            Log.d("zxc","movie poster : "+poster);
+//            imgPoster = "http://image.tmdb.org/t/p/w500"+poster;
+//        }
 
 
 
@@ -175,12 +165,6 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
             }
         });
 
-//        initViews();
-
-
-
-//        key = intent.getString("MOVIE_KEY");
-//        Log.d("zxc", "movie key : "+key);
 
 //        SingleMovieFragment singleMovieFragment = new SingleMovieFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, singleMovieFragment)
@@ -228,11 +212,55 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 //        TabLayout tabLayout = findViewById(R.id.tab_lLayOut);
 //        tabLayout.setupWithViewPager(mViewPager);
 
-//        setDataFromSharedPreferences(movie);
 
-//        saveArray();
-
+        addFavorite(SingleMovieActivity.this,movieModel);
     }
+
+    public void saveFavorites(Context context, List<MovieModel> favorites) {
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+
+        settings = context.getSharedPreferences(PREFS_NAME,
+                Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        Gson gson = new Gson();
+        String jsonFavorites = gson.toJson(favorites);
+
+        editor.putString(FAVORITES, jsonFavorites);
+
+        editor.commit();
+    }
+
+    public void addFavorite(Context context, MovieModel movie) {
+        List<MovieModel> favorites = getFavorites(context);
+        if (favorites == null)
+            favorites = new ArrayList<MovieModel>();
+        favorites.add(movie);
+        saveFavorites(context, favorites);
+    }
+
+    public ArrayList<MovieModel> getFavorites(Context context) {
+        SharedPreferences settings;
+        List<MovieModel> favorites;
+
+        settings = context.getSharedPreferences(PREFS_NAME,
+                Context.MODE_PRIVATE);
+
+        if (settings.contains(FAVORITES)) {
+            String jsonFavorites = settings.getString(FAVORITES, null);
+            Gson gson = new Gson();
+
+                MovieModel[] favoriteItems = gson.fromJson(jsonFavorites,
+                        MovieModel[].class);
+                favorites = Arrays.asList(favoriteItems);
+                favorites = new ArrayList<MovieModel>(favorites);
+
+        } else
+            return null;
+        return (ArrayList<MovieModel>) favorites;
+    }
+
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
@@ -304,88 +332,6 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 
     }
 
-    public boolean saveArray()
-    {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor mEdit1 = sp.edit();
-        /* sKey is an array */
-        mEdit1.putInt("Status_size", arrPackage.size());
-
-        for(int i=0;i<arrPackage.size();i++)
-        {
-            mEdit1.remove("Status_" + i);
-            mEdit1.putString("Status_" + i, arrPackage.get(i));
-        }
-
-        return mEdit1.commit();
-    }
-
-//    private void packagesharedPreferences() {
-//        SharedPreferences.Editor editor = shared.edit();
-//        Set<String> set = new HashSet<String>();
-//        set.addAll(arrPackage);
-//        editor.putStringSet("DATE_LIST", set);
-//        editor.apply();
-//        Log.d("storesharedPreferences",""+set);
-//    }
-
-
-
-
-
-
-
-//    private void setDataFromSharedPreferences(List<MovieModel> movie){
-//        Gson gson = new Gson();
-////        String jsonCurProduct = gson.toJson(movie);
-//        String jsonCurProduct = gson.toJson(movie);
-//
-//        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, activity.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//
-//        editor.putString(PRODUCT_TAG, jsonCurProduct);
-//        editor.commit();
-//    }
-
-
-//    public void addObject(MovieModel movie){
-//        Gson gson = new Gson();
-//        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, activity.MODE_PRIVATE);
-//        String jsonSaved = sharedPref.getString(PRODUCT_TAG, "");
-//        String jsonNewproductToAdd = gson.toJson(movie);
-//
-//        JSONArray jsonArrayProduct= new JSONArray();
-//        if(jsonSaved.length()!=0){
-//            try {
-//                jsonArrayProduct.put(new JSONArray(jsonSaved)) ;
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//        editor.putString(PRODUCT_TAG, jsonNewproductToAdd);
-//        editor.commit();
-//    }
-
-
-
-
-
-
-//    public <T> void setList(String key, List<MovieModel> list) {
-//        Gson gson = new Gson();
-//        String json = gson.toJson(list);
-//
-//        set(key, json);
-//    }
-//
-//    public static void set(String key, String value) {
-//        editor.putString(key, value);
-//        editor.commit();
-//    }
-
-
 
 
 //    private void setupViewPager(ViewPager viewPager){
@@ -407,4 +353,6 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
     public String getMovieOverView() {
         return overView;
     }
+
+
 }

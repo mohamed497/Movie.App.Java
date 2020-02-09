@@ -22,6 +22,14 @@ public class MovieModel implements Parcelable{
         this.poster_path = poster_path;
     }
 
+    public static final Comparator<MovieModel> BY_NAME_ALPHABETICAL = new Comparator<MovieModel>() {
+        @Override
+        public int compare(MovieModel movie, MovieModel t1) {
+
+            return movie.title.compareTo(t1.title);
+        }
+    };
+
 
     public MovieModel() {
     }
@@ -50,19 +58,23 @@ public class MovieModel implements Parcelable{
     }
 
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-    public static final Comparator<MovieModel> BY_NAME_ALPHABETICAL = new Comparator<MovieModel>() {
-        @Override
-        public int compare(MovieModel movie, MovieModel t1) {
+        dest.writeString(this.poster_path);
+        dest.writeString(this.title);
+        dest.writeInt(this.id);
+        dest.writeString(this.overview);
 
-            return movie.title.compareTo(t1.title);
-        }
-    };
+
+
+    }
+
 
     protected MovieModel(Parcel in){
         this.poster_path = in.readString();
         this.overview = in.readString();
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.id = (Integer) in.readInt();
         this.title = in.readString();
 
     }
@@ -79,21 +91,14 @@ public class MovieModel implements Parcelable{
         }
     };
 
+
+
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeString(this.poster_path);
-        dest.writeString(this.title);
-        dest.writeString(this.overview);
-        dest.writeValue(this.id);
-
-
-
-    }
 
 }

@@ -33,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class TryReviewActivity extends AppCompatActivity {
     private static final String PRODUCT_TAG = "MyProduct";
 
 
+    SingleMovieActivity singleMovieActivity = new SingleMovieActivity();
 
 
     @Override
@@ -108,38 +110,77 @@ public class TryReviewActivity extends AppCompatActivity {
 //        }
 
 
-        final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("Set", "");
-        if (json.isEmpty()) {
-            Toast.makeText(TryReviewActivity.this, "There is something error", Toast.LENGTH_LONG).show();
-        } else {
-            Type type = new TypeToken<List<String>>() {
-            }.getType();
-            List<String> arrPackageData = gson.fromJson(json, type);
-            for(String data:arrPackageData) {
-//                textTitle.setText(data);
-                MovieAdapter movieAdapter = new MovieAdapter();
-            movieList.add(new MovieModel(data, BASE_URL_IMG));
-            movieAdapter.setList(movieList);
-            recyclerView.setAdapter(movieAdapter);
-            }
+//        final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+//        Gson gson = new Gson();
+//        String json = sharedPreferences.getString("Set", "");
+//        if (json.isEmpty()) {
+//            Toast.makeText(TryReviewActivity.this, "There is something error", Toast.LENGTH_LONG).show();
+//        } else {
+//            Type type = new TypeToken<List<String>>() {
+//            }.getType();
+//            List<String> arrPackageData = gson.fromJson(json, type);
+//            for(String data:arrPackageData) {
+////                textTitle.setText(data);
+//                MovieAdapter movieAdapter = new MovieAdapter();
+//            movieList.add(new MovieModel(data, BASE_URL_IMG));
+//            movieAdapter.setList(movieList);
+//            recyclerView.setAdapter(movieAdapter);
+//            }
+//
+//        }
+//      ArrayList arr = new ArrayList<>();
+        List<MovieModel> movie = new ArrayList<>();
 
-        }
+//        List<MovieModel> z;
+//        singleMovieActivity.getFavorites(TryReviewActivity.this);
+        movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
+
+        Log.d("zxc", "movie : "+movie.get(0));
+//        String title = movie.get(0).getTitle();
+//        String poster = movie.get(0).getPoster_path();
+//        movieList.add(new MovieModel(title,poster));
+//        adapter = new MovieAdapter();
+//        adapter.setList(movieList);
+//        recyclerView.setAdapter(adapter);
+
+//        for (int i=0;i<movie.size();i++){
+//            String title = movie.get(i).getTitle();
+//            String poster = movie.get(i).getPoster_path();
+////            if (!checkFavoriteItem(movie.get(i))){
+//                Log.d("try"," z" +title);
+//                movieList.add(new MovieModel(title,BASE_URL_IMG));
+//                adapter = new MovieAdapter();
+//                adapter.setList(movieList);
+//                recyclerView.setAdapter(adapter);
+//            }
+//            else{
+//                Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
+//                adapter = new MovieAdapter();
+//                adapter.setList(movieList);
+//                recyclerView.setAdapter(adapter);
+//            }
+
+//        }
+//        movieList.add(new MovieModel(singleMovieActivity.getFavorites(TryReviewActivity.this),BASE_URL_IMG));
+
+
     }
 
-    public void loadArray()
-    {
-        SharedPreferences mSharedPreference1 =   PreferenceManager.getDefaultSharedPreferences(activity);
-        sKey.clear();
-        int size = mSharedPreference1.getInt("Status_size", 0);
+//    public boolean checkFavoriteItem(MovieModel checkProduct) {
+//        boolean check = false;
+//        List<MovieModel> favorites = singleMovieActivity.getFavorites(TryReviewActivity.this);
+//        if (favorites != null) {
+//            for (MovieModel product : favorites) {
+//                if (product.equals(checkProduct)) {
+//                    check = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return check;
+//    }
 
-        for(int i=0;i<size;i++)
-        {
-            sKey.add(mSharedPreference1.getString("Status_" + i, null));
-        }
 
-    }
 
     private List<MovieModel> getDataFromSharedPreferences(){
         Gson gson = new Gson();
@@ -153,21 +194,6 @@ public class TryReviewActivity extends AppCompatActivity {
         return productFromShared;
     }
 
-//    private void getAllFavorite(){
-//        new AsyncTask<Void, Void, Void>(){
-//            @Override
-//            protected Void doInBackground(Void... params){
-//                movieList.clear();
-//                movieList.addAll(favoriteDbHelper.getAllFavorite());
-//                return null;
-//            }
-//            @Override
-//            protected void onPostExecute(Void aVoid){
-//                super.onPostExecute(aVoid);
-//                adapter.notifyDataSetChanged();
-//            }
-//        }.execute();
-//    }
 
     public Activity getActivity(){
         Context context = this;
@@ -180,6 +206,9 @@ public class TryReviewActivity extends AppCompatActivity {
         return null;
 
     }
+
+
+
 
 
 }

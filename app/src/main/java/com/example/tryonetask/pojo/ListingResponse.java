@@ -4,6 +4,7 @@ import android.graphics.Movie;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,12 +33,15 @@ public class ListingResponse implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.page);
         dest.writeTypedList(this.results);
+//        dest.writeList(this.results);
         dest.writeInt(this.total_results);
     }
 
     protected ListingResponse(Parcel in) {
         this.page = in.readInt();
         this.results = in.createTypedArrayList(MovieModel.CREATOR);
+//        this.results = new ArrayList<>();
+//        in.readList(this.results, MovieModel.class.getClassLoader());
         this.total_results = in.readInt();
     }
 

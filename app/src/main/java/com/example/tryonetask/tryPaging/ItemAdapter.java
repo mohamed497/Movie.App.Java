@@ -59,29 +59,32 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
             holder.title.setText(movie.getTitle());
             Glide.with(mCtx).load(BASE_URL_IMG+movie.getPoster_path()).into(holder.img);
+            holder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(mCtx, SingleMovieActivity.class);
+//                intent.putExtra("MOVIE_ID",movie.id);
+                    intent.putExtra("movie",movie);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("MOVIE_OVERVIEW",movie.getOverview());
+//                intent.putExtra("MOVIE_TITLE",movie.getTitle());
+//                intent.putExtra("MOVIE_POSTER",movie.getPoster_path());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mCtx.startActivity(intent);
+
+//                Bundle bundle = new Bundle();
+//                SingleMovieFragment singleMovieFragment = new SingleMovieFragment();
+//                singleMovieFragment.setArguments(bundle);
+                }
+            });
 
 
         }else{
             Toast.makeText(mCtx, "Item is null", Toast.LENGTH_LONG).show();
         }
 
-        holder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent intent = new Intent(mCtx, SingleMovieActivity.class);
-                intent.putExtra("MOVIE_ID",movie.id);
-//                intent.putExtra("movie",movie);
-                intent.putExtra("MOVIE_OVERVIEW",movie.getOverview());
-                intent.putExtra("MOVIE_TITLE",movie.getTitle());
-                intent.putExtra("MOVIE_POSTER",movie.getPoster_path());
-                mCtx.startActivity(intent);
-
-//                Bundle bundle = new Bundle();
-//                SingleMovieFragment singleMovieFragment = new SingleMovieFragment();
-//                singleMovieFragment.setArguments(bundle);
-            }
-        });
 
     }
 
