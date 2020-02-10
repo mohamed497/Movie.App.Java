@@ -45,16 +45,12 @@ public class TryReviewActivity extends AppCompatActivity {
 
     TextView textTitle;
     ImageView img;
-    private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500/2N9lhZg6VtVJoGCZDjXVC3a81Ea.jpg";
+    private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
 
 
     private List<MovieModel> movieList;
     private MovieAdapter adapter;
     private AppCompatActivity activity = TryReviewActivity.this;
-    private SwipeRefreshLayout swipeContainer;
-
-    List<String> sKey;
-
 
     private static final String PREFS_TAG = "SharedPrefs";
     private static final String PRODUCT_TAG = "MyProduct";
@@ -69,123 +65,55 @@ public class TryReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_try_review);
 
 
-//        getAllFavorite();
-
-
-//        textTitle = findViewById(R.id.get_ttitle);
-//        img = findViewById(R.id.movie_iimg);
-
-
         recyclerView = findViewById(R.id.recyclerReview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 //
         movieList = new ArrayList<>();
-//
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        String name = preferences.getString("MOVIE_TITLE", "");
-//        if (!name.equalsIgnoreCase("")) {
-//            Toast.makeText(TryReviewActivity.this, "MOVIE TITLE : " + name, Toast.LENGTH_SHORT).show();
-//            String post = preferences.getString("MOVIE_POSTER", "");
-//            MovieAdapter movieAdapter = new MovieAdapter();
-//            movieList.add(new MovieModel(name, post));
-//            movieAdapter.setList(movieList);
-//            recyclerView.setAdapter(movieAdapter);
-////            Glide.with(this).load(BASE_URL_IMG+post).into(img);
-//
-//        }
 
-        sKey = new ArrayList<>();
-
-
-
-//        final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
-//        Gson gson = new Gson();
-//        String json = sharedPreferences.getString("Set", "");
-//        if (json.isEmpty()) {
-//            Toast.makeText(TryReviewActivity.this, "There is something error", Toast.LENGTH_LONG).show();
-//        } else {
-//            Type type = new TypeToken<List<String>>() {
-//            }.getType();
-//            List<String> arrPackageData = gson.fromJson(json, type);
-//            for(String data:arrPackageData) {
-////                textTitle.setText(data);
-//                MovieAdapter movieAdapter = new MovieAdapter();
-//            movieList.add(new MovieModel(data, BASE_URL_IMG));
-//            movieAdapter.setList(movieList);
-//            recyclerView.setAdapter(movieAdapter);
-//            }
-//
-//        }
-//      ArrayList arr = new ArrayList<>();
         List<MovieModel> movie;
 
-//        List<MovieModel> z;
-//        singleMovieActivity.getFavorites(TryReviewActivity.this);
         movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
         if (movie != null){
             Log.d("zxc", "movie : "+movie.get(0));
 
         }
 
-//        String title = movie.get(0).getTitle();
-//        String poster = movie.get(0).getPoster_path();
-//        movieList.add(new MovieModel(title,poster));
-//        adapter = new MovieAdapter();
-//        adapter.setList(movieList);
-//        recyclerView.setAdapter(adapter);
 
-//        for (int i=0;i<movie.size();i++){
-//            String title = movie.get(i).getTitle();
-//            String poster = movie.get(i).getPoster_path();
-////            if (!checkFavoriteItem(movie.get(i))){
-//                Log.d("try"," z" +title);
-//                movieList.add(new MovieModel(title,BASE_URL_IMG));
-//                adapter = new MovieAdapter();
-//                adapter.setList(movieList);
-//                recyclerView.setAdapter(adapter);
-//            }
-//            else{
-//                Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
-//                adapter = new MovieAdapter();
-//                adapter.setList(movieList);
-//                recyclerView.setAdapter(adapter);
-//            }
+        for (int i=0;i<movie.size();i++){
+            String title = movie.get(i).getTitle();
+            String poster = movie.get(i).getPoster_path();
+            if (!checkFavoriteItem(movie.get(i))){
+                movieList.add(new MovieModel(title,poster));
+                adapter = new MovieAdapter();
+                adapter.setList(movieList);
+                recyclerView.setAdapter(adapter);
+            }
+            else{
+                Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
+                Log.d("movie", "MOVIE == :"+title);
+                adapter = new MovieAdapter();
+                adapter.setList(movieList);
+                recyclerView.setAdapter(adapter);
+            }
 
-//        }
-//        movieList.add(new MovieModel(singleMovieActivity.getFavorites(TryReviewActivity.this),BASE_URL_IMG));
-
+        }
 
     }
 
-//    public boolean checkFavoriteItem(MovieModel checkProduct) {
-//        boolean check = false;
-//        List<MovieModel> favorites = singleMovieActivity.getFavorites(TryReviewActivity.this);
-//        if (favorites != null) {
-//            for (MovieModel product : favorites) {
-//                if (product.equals(checkProduct)) {
-//                    check = true;
-//                    break;
-//                }
-//            }
-//        }
-//        return check;
-//    }
-
-
-
-    private List<MovieModel> getDataFromSharedPreferences(){
-        Gson gson = new Gson();
-        List<MovieModel> productFromShared = new ArrayList<>();
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, activity.MODE_PRIVATE);
-        String jsonPreferences = sharedPref.getString(PRODUCT_TAG, "");
-
-        Type type = new TypeToken<List<MovieModel>>() {}.getType();
-        productFromShared = gson.fromJson(jsonPreferences, type);
-
-        return productFromShared;
+    public boolean checkFavoriteItem(MovieModel checkProduct) {
+        boolean check = false;
+        List<MovieModel> favorites = singleMovieActivity.getFavorites(TryReviewActivity.this);
+        if (favorites != null) {
+            for (MovieModel movie : favorites) {
+                if (movie.equals(checkProduct)) {
+                    check = true;
+                    break;
+                }
+            }
+        }
+        return check;
     }
-
 
     public Activity getActivity(){
         Context context = this;

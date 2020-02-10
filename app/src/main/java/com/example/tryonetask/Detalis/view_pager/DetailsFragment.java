@@ -5,8 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tryonetask.Detalis.DetailsViewModel;
@@ -14,6 +16,8 @@ import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.Detalis.video.VideoAdapter;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.videos_data.VideoModel;
+import com.example.tryonetask.ui.ViewPager.PopularMovieFragment;
+import com.example.tryonetask.ui.main.MainActivity;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 
 import java.util.List;
@@ -37,33 +41,42 @@ public class DetailsFragment extends Fragment  {
     RecyclerView recyclerView;
     String movieTitleFromActivity,movieOverViewFromActivity,moviePosterFromActivity;
     int movieIdFromActivity;
+    boolean mIsDualPane;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details_movie, container, false);
-//        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
+        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
 
 
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-//         movieTitleFromActivity = activity.getMovieTitle();
-//         movieOverViewFromActivity = activity.getMovieOverView();
-//         moviePosterFromActivity = activity.getMoviePoster();
-//         movieIdFromActivity = activity.getMovieId();
+        movieTitleFromActivity = activity.getMovieTitle();
+        movieOverViewFromActivity = activity.getMovieOverView();
+        moviePosterFromActivity = activity.getMoviePoster();
+        movieIdFromActivity = activity.getMovieId();
 
-        detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
-        detailsViewModel.getMovieTrailer(movieIdFromActivity);
-        detailsViewModel.videoMovieMutableLiveData.observe(this, new Observer<List<VideoModel>>() {
-            @Override
-            public void onChanged(List<VideoModel> videoModels) {
-                VideoAdapter videoAdapter = new VideoAdapter(view.getContext());
-                videoAdapter.setList(videoModels);
-                recyclerView.setAdapter(videoAdapter);
-            }
-        });
+
+        mIsDualPane = false;
+
+        FrameLayout frameLayout = view.findViewById(R.id.large_details);
+        if(frameLayout != null){
+            mIsDualPane = frameLayout.getVisibility() == View.VISIBLE;
+        }
+
+        if(mIsDualPane){
+
+            Toast.makeText(view.getContext(), "TABLET", Toast.LENGTH_SHORT).show();
+            getChildFragmentManager().beginTransaction().replace(R.id.large_details,
+                    new PopularMovieFragment()).commit();
+        }
+        else{
+            getData(view);
+        }
+
 
         Log.d("zxc","fragment : "+movieTitle);
 
@@ -78,5 +91,20 @@ public class DetailsFragment extends Fragment  {
         movieOverView.setText(movieOverViewFromActivity);
 
         return view;
+    }
+
+    public void getData(View view){
+
+        detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
+        detailsViewModel.getMovieTrailer(movieIdFromActivity);
+        detailsViewModel.videoMovieMutableLiveData.observe(this, new Observer<List<VideoModel>>() {
+            @Override
+            public void onChanged(List<VideoModel> videoModels) {
+                VideoAdapter videoAdapter = new VideoAdapter(view.getContext());
+                videoAdapter.setList(videoModels);
+                recyclerView.setAdapter(videoAdapter);
+            }
+        });
+
     }
 }

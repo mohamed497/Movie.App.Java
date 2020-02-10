@@ -34,6 +34,15 @@ public class SingleMovieFragment extends Fragment {
     private RecyclerView recyclerView;
 
 
+
+
+
+
+
+    //not used
+
+    //\\
+    //\\
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,12 +54,12 @@ public class SingleMovieFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-//        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
+        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
 
-//        String movieTitleFromActivity = activity.getMovieTitle();
-//        String movieOverViewFromActivity = activity.getMovieOverView();
-//        String moviePosterFromActivity = activity.getMoviePoster();
-//        int movieIdFromActivity = activity.getMovieId();
+        String movieTitleFromActivity = activity.getMovieTitle();
+        String movieOverViewFromActivity = activity.getMovieOverView();
+        String moviePosterFromActivity = activity.getMoviePoster();
+        int movieIdFromActivity = activity.getMovieId();
 
         detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
         detailsViewModel.getMovieTrailer(500);
@@ -70,14 +79,14 @@ public class SingleMovieFragment extends Fragment {
 
         Log.d("zxc","fragment : "+movieTitle);
 
-//        movieTitle = view.findViewById(R.id.single_title);
-//        movieOverView = view.findViewById(R.id.single_overView);
-//        movieImg = view.findViewById(R.id.single_movieImg);
+        movieTitle = view.findViewById(R.id.single_title);
+        movieOverView = view.findViewById(R.id.single_overView);
+        movieImg = view.findViewById(R.id.single_movieImg);
 
-//        Glide.with(view.getContext()).load(BASE_URL_IMG+moviePosterFromActivity).into(movieImg);
-//
-//        movieTitle.setText(movieTitleFromActivity);
-//        movieOverView.setText(movieOverViewFromActivity);
+        Glide.with(view.getContext()).load(BASE_URL_IMG+moviePosterFromActivity).into(movieImg);
+
+        movieTitle.setText(movieTitleFromActivity);
+        movieOverView.setText(movieOverViewFromActivity);
 
 
         return view;

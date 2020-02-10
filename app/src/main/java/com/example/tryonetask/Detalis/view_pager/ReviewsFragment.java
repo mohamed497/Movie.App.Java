@@ -38,8 +38,8 @@ public class ReviewsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_review_movie, container, false);
-//        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
-//        movieIdFromActivity = activity.getMovieId();
+        SingleMovieActivity activity = (SingleMovieActivity) getActivity();
+        movieIdFromActivity = activity.getMovieId();
 
         recyclerView = view.findViewById(R.id.recycler_Review);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

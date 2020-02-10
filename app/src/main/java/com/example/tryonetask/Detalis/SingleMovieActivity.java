@@ -54,8 +54,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener
-,YouTubePlayer.PlaybackEventListener,YouTubePlayer.PlayerStateChangeListener{
+public class SingleMovieActivity extends AppCompatActivity{
+
+
+//public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener
+//,YouTubePlayer.PlaybackEventListener,YouTubePlayer.PlayerStateChangeListener{
 
 
 
@@ -83,8 +86,13 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_movie);
 
-        playerView = findViewById(R.id.playerview);
-        playerView.initialize(API_KEY,this);
+
+        //youtube
+//        playerView = findViewById(R.id.playerview);
+//        playerView.initialize(API_KEY,this);
+
+
+
 //        recyclerView = findViewById(R.id.recycler);
 //        recyclerView = findViewById(R.id.recyclerReview);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -166,12 +174,12 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 //                .commit();
 
 
-//        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-//        mViewPager = findViewById(R.id.viewPager);
-//        setupViewPager(mViewPager);
-//
-//        TabLayout tabLayout = findViewById(R.id.tab_lLayOut);
-//        tabLayout.setupWithViewPager(mViewPager);
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        mViewPager = findViewById(R.id.viewPager);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = findViewById(R.id.tab_lLayOut);
+        tabLayout.setupWithViewPager(mViewPager);
 
 
         addFavorite(SingleMovieActivity.this,movieModel);
@@ -201,6 +209,20 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
         saveFavorites(context, favorites);
     }
 
+//    public boolean checkFavoriteItem(MovieModel checkProduct) {
+//        boolean check = false;
+//        List<MovieModel> favorites = singleMovieActivity.getFavorites(TryReviewActivity.this);
+//        if (favorites != null) {
+//            for (MovieModel movie : favorites) {
+//                if (movie.equals(checkProduct)) {
+//                    check = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return check;
+//    }
+
     public ArrayList<MovieModel> getFavorites(Context context) {
         SharedPreferences settings;
         List<MovieModel> favorites;
@@ -219,89 +241,91 @@ public class SingleMovieActivity extends YouTubeBaseActivity implements YouTubeP
 
         } else
             return null;
-        Log.d("ww","movie ! !"+(ArrayList<MovieModel>) favorites);
+
         return (ArrayList<MovieModel>) favorites;
-    }
-
-
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        youTubePlayer.setPlayerStateChangeListener(this);
-        youTubePlayer.setPlaybackEventListener(this);
-
-        if(!b){
-            youTubePlayer.cueVideo(VIDEO_ID);
-        }
-    }
-
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
     }
 
-    @Override
-    public void onPlaying() {
+    // youtube
 
-    }
-
-    @Override
-    public void onLoaded(String s) {
-
-    }
-
-    @Override
-    public void onLoading() {
-
-    }
-
-    @Override
-    public void onVideoStarted() {
-
-    }
-
-    @Override
-    public void onVideoEnded() {
-
-    }
-
-    @Override
-    public void onError(YouTubePlayer.ErrorReason errorReason) {
-
-    }
-
-    @Override
-    public void onAdStarted() {
-
-    }
-
-    @Override
-    public void onBuffering(boolean b) {
-
-    }
-
-    @Override
-    public void onStopped() {
-
-    }
-
-    @Override
-    public void onPaused() {
-
-    }
-
-    @Override
-    public void onSeekTo(int i) {
-
-    }
-
-
-
-//    private void setupViewPager(ViewPager viewPager){
-//        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
-//        adapter.addFragment(new ReviewsFragment(),"Reviews");
-//        adapter.addFragment(new DetailsFragment(),"Details");
-//        viewPager.setAdapter(adapter);
+//    @Override
+//    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+//        youTubePlayer.setPlayerStateChangeListener(this);
+//        youTubePlayer.setPlaybackEventListener(this);
+//
+//        if(!b){
+//            youTubePlayer.cueVideo(VIDEO_ID);
+//        }
 //    }
+//
+//    @Override
+//    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+//
+//    }
+//
+//    @Override
+//    public void onPlaying() {
+//
+//    }
+//
+//    @Override
+//    public void onLoaded(String s) {
+//
+//    }
+//
+//    @Override
+//    public void onLoading() {
+//
+//    }
+//
+//    @Override
+//    public void onVideoStarted() {
+//
+//    }
+//
+//    @Override
+//    public void onVideoEnded() {
+//
+//    }
+//
+//    @Override
+//    public void onError(YouTubePlayer.ErrorReason errorReason) {
+//
+//    }
+//
+//    @Override
+//    public void onAdStarted() {
+//
+//    }
+//
+//    @Override
+//    public void onBuffering(boolean b) {
+//
+//    }
+//
+//    @Override
+//    public void onStopped() {
+//
+//    }
+//
+//    @Override
+//    public void onPaused() {
+//
+//    }
+//
+//    @Override
+//    public void onSeekTo(int i) {
+//
+//    }
+
+
+
+    private void setupViewPager(ViewPager viewPager){
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new ReviewsFragment(),"Reviews");
+        adapter.addFragment(new DetailsFragment(),"Details");
+        viewPager.setAdapter(adapter);
+    }
 
     public String getMovieTitle() {
         return movieTitle;
