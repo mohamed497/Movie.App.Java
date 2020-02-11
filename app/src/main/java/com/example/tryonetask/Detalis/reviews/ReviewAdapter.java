@@ -49,15 +49,25 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
         ReviewModel reviewModel = reviewModels.get(position);
 
-        if(listingReviewResponse.total_results == 0){
-            holder.authorName.setText(reviewModel.getAuthor());
-            holder.movieContent.setText(reviewModel.getContent());
+        holder.authorName.setText(reviewModel.getAuthor());
+        holder.movieContent.setText(reviewModel.getContent());
 
-            Log.d("author_name","author name : "+reviewModel.getAuthor());
-        }
-        else {
-            holder.authorName.setText("THERE IS NO REVIEW !!");
-        }
+//        if(listingReviewResponse.total_results != 0){
+//            holder.authorName.setText(reviewModel.getAuthor());
+//            holder.movieContent.setText(reviewModel.getContent());
+//
+//            Log.d("author_name","author name : "+reviewModel.getAuthor());
+//        }
+//        else {
+//            holder.authorName.setText("THERE IS NO REVIEW !!");
+//        }
+//        if(listingReviewResponse.results != null){
+//            holder.authorName.setText("THERE IS NO REVIEW !!");
+//        }
+//        else{
+//            holder.authorName.setText(reviewModel.getAuthor());
+//            holder.movieContent.setText(reviewModel.getContent());
+//        }
 
 
     }

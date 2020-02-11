@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 
@@ -26,7 +28,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private List<MovieModel> movieModels;
 
     private boolean isLoadingAdded = false;
-
+    SingleMovieActivity singleMovieActivity = new SingleMovieActivity();
 
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
 
@@ -58,6 +60,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         holder.title.setText(movie.getTitle());
         Glide.with(context).load(BASE_URL_IMG+movie.getPoster_path()).into(holder.img);
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                singleMovieActivity.removeFavorite(context,movie);
+                Toast.makeText(context, "Movie Removed SUCC !", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }

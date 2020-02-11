@@ -2,6 +2,7 @@ package com.example.tryonetask.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
+import com.example.tryonetask.Detalis.SingleMovieActivity;
+import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.tryCache.RoomViewModel;
@@ -28,6 +31,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
@@ -44,14 +48,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
 
-
+    MovieModel movieModel;
     private DrawerLayout drawerLayout;
-
+    int movieId;
+    String movieTitle,overView,poster,imgPoster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
+//        Bundle intent = getIntent().getExtras();
+//        if( intent != null){
+//            String sessionId = intent.getString("EXTRA_SESSION_ID");
+//            Log.d("sessionID","SESSION : "+sessionId);
+//        }
+
+
 
 //        Toolbar toolbar = findViewById(R.id.toolbarr);
 //        setSupportActionBar(toolbar);
@@ -67,23 +83,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             NavigationView navigationView = findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+
             if (savedInstanceState == null){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PopularMovieFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_popularMovie);
             }
 
-            Toast.makeText(MainActivity.this, "TABLET", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, "TABLET", Toast.LENGTH_SHORT).show();
 
-//            Toolbar toolbar = findViewById(R.id.toolbarr);
-//            setSupportActionBar(toolbar);
+            Toolbar toolbar = findViewById(R.id.toolbarr);
+            setSupportActionBar(toolbar);
 
 
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout  ,
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout  , toolbar,
                     R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
             drawerLayout.addDrawerListener(toggle);
             toggle.syncState();
+
+//            FrameLayout frameLayout = findViewById(R.id.largeDetails);
+
+            Intent intentThatStartedThisActivity = getIntent();
+            if (intentThatStartedThisActivity.hasExtra("movie")){
+                movieModel = getIntent().getParcelableExtra("movie");
+                movieId = movieModel.id;
+                movieTitle = movieModel.getTitle();
+                poster = movieModel.getPoster_path();
+                overView = movieModel.getOverview();
+                Log.d("zxc","moview OverView : " +overView);
+                Log.d("zxc","movie title : "+movieTitle);
+                Log.d("zxc","movie id : "+movieId);
+
+
+            }
+            else{
+                Toast.makeText(this, "No API Data", Toast.LENGTH_SHORT).show();
+            }
+
+            Bundle bundle = new Bundle();
+            bundle.putString("MOVIE_TITLE", movieTitle);
+            bundle.putString("MOVIE_OVERVIEW", overView);
+            bundle.putString("MOVIE_POSTER", poster);
+            bundle.putInt("MOVIE_ID",movieId);
+            bundle.putParcelable("MOVIE",movieModel);
+            DetailsFragment myFrag = new DetailsFragment();
+            myFrag.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,myFrag).commit();
+//            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,
+//                    new DetailsFragment()).commit();
+
         }
         else{
             mPagerAdapter = new PagerAdapter(getSupportFragmentManager());

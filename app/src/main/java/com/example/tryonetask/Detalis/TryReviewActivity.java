@@ -74,10 +74,10 @@ public class TryReviewActivity extends AppCompatActivity {
         List<MovieModel> movie;
 
         movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
-        if (movie != null){
-            Log.d("zxc", "movie : "+movie.get(0));
-
-        }
+//        if (movie != null){
+//            Log.d("zxc", "movie : "+movie.get(0));
+//
+//        }
 
 
         for (int i=0;i<movie.size();i++){

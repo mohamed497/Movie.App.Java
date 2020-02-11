@@ -22,6 +22,8 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background" />
 
+
+
         <TextView
             android:id="@+id/get_title"
             android:layout_width="match_parent"
@@ -31,6 +33,13 @@
             android:text="Movie Name"
             android:textColor="#222222"
             android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="1sp"
             android:textStyle="bold" />
 
 

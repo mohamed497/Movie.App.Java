@@ -3,6 +3,7 @@ package com.example.tryonetask.tryPaging;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tryonetask.Detalis.TryReviewActivity;
+import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.ui.main.MainActivity;
 
 import java.util.List;
 
@@ -57,19 +60,47 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
             holder.title.setText(movie.getTitle());
             Glide.with(mCtx).load(BASE_URL_IMG+movie.getPoster_path()).into(holder.img);
+
+
             holder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(mCtx, SingleMovieActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("edttext", "From Activity");
+                    // set Fragmentclass Arguments
+                    DetailsFragment fragobj = new DetailsFragment();
+                    fragobj.setArguments(bundle);
+
+
+                    boolean x = false;
+                    if (holder.newTitle != null){
+                        x = holder.newTitle.getVisibility() == View.VISIBLE;
+                    }
+                    if(x){
+                        Intent intent = new Intent(mCtx, MainActivity.class);
 //                intent.putExtra("MOVIE_ID",movie.id);
-                    intent.putExtra("movie",movie);
+                        intent.putExtra("movie",movie);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                intent.putExtra("MOVIE_OVERVIEW",movie.getOverview());
 //                intent.putExtra("MOVIE_TITLE",movie.getTitle());
 //                intent.putExtra("MOVIE_POSTER",movie.getPoster_path());
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mCtx.startActivity(intent);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mCtx.startActivity(intent);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(mCtx, SingleMovieActivity.class);
+//                intent.putExtra("MOVIE_ID",movie.id);
+                        intent.putExtra("movie",movie);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("MOVIE_OVERVIEW",movie.getOverview());
+//                intent.putExtra("MOVIE_TITLE",movie.getTitle());
+//                intent.putExtra("MOVIE_POSTER",movie.getPoster_path());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mCtx.startActivity(intent);
+                    }
+
 
                 }
             });
@@ -101,12 +132,12 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title;
+        TextView title,newTitle;
         ImageView img;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            newTitle = itemView.findViewById(R.id.title_title);
             title = itemView.findViewById(R.id.get_title);
             img = itemView.findViewById(R.id.movie_img);
 

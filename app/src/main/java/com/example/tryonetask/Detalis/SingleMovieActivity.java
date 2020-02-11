@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.example.tryonetask.pojo.videos_data.VideoModel;
 import com.example.tryonetask.ui.ViewPager.PagerAdapter;
 import com.example.tryonetask.ui.ViewPager.PopularMovieFragment;
 import com.example.tryonetask.ui.ViewPager.TopMovieFragment;
+import com.example.tryonetask.ui.main.MainActivity;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -67,7 +69,7 @@ public class SingleMovieActivity extends AppCompatActivity{
     RecyclerView recyclerView;
 
     MovieModel movieModel;
-//    private final AppCompatActivity activity = SingleMovieActivity.this;
+    private final AppCompatActivity activity = SingleMovieActivity.this;
 
 
     private ViewPager mViewPager;
@@ -85,6 +87,7 @@ public class SingleMovieActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_movie);
+
 
 
         //youtube
@@ -116,6 +119,64 @@ public class SingleMovieActivity extends AppCompatActivity{
         }
 
 
+//        boolean mIsDualPane = false;
+//        FrameLayout frameLayout = findViewById(R.id.frame_container);
+//        if(frameLayout != null){
+//            mIsDualPane = frameLayout.getVisibility() == View.VISIBLE;
+//        }
+//
+//        if (mIsDualPane){
+//
+//        }
+
+        boolean x = false;
+
+        FrameLayout frameLayout = findViewById(R.id.frame_container);
+        if (frameLayout != null){
+            x = frameLayout.getVisibility() == View.VISIBLE;
+        }
+        if(x){
+            Bundle bundle = new Bundle();
+            bundle.putString("MOVIE_TITLE", movieTitle);
+            bundle.putString("MOVIE_OVERVIEW", overView);
+            bundle.putString("MOVIE_POSTER", poster);
+            bundle.putInt("MOVIE_ID",movieId);
+            DetailsFragment myFrag = new DetailsFragment();
+            myFrag.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,myFrag).commit();
+
+        }else{
+
+        }
+
+
+
+
+//        Bundle bundle = new Bundle();
+//        bundle.putString("NAME_KEY", movieTitle);
+//        bundle.putInt("YEAR_KEY", Integer.valueOf(movieId));
+//
+//        //PASS OVER THE BUNDLE TO OUR FRAGMENT
+//        DetailsFragment myFragment = new DetailsFragment();
+//        myFragment.setArguments(bundle);
+
+
+        //THEN NOW SHOW OUR FRAGMENT
+//        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,myFragment).commit();
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putString("edttext", "From Activity");
+//// set Fragmentclass Arguments
+//        DetailsFragment fragobj = new DetailsFragment();
+//        fragobj.setArguments(bundle);
+
+//        Intent intent = new Intent(activity, MainActivity.class);
+//        intent.putExtra("EXTRA_SESSION_ID", movieTitle);
+//        startActivity(intent);
+
+
+
+
 //        Bundle intent = getIntent().getExtras();
 //        if (intent != null) {
 //
@@ -132,7 +193,25 @@ public class SingleMovieActivity extends AppCompatActivity{
 //        }
 
 
-
+        MaterialFavoriteButton materialFavoriteButtonNice = findViewById(R.id.favorite_button);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
+            @Override
+            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                if (favorite){
+                    Snackbar.make(buttonView, "Added to Favorite",
+                            Snackbar.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
+                    startActivity(intent);
+                }else{
+                    Snackbar.make(buttonView, "Removed from Favorite",
+                            Snackbar.LENGTH_SHORT).show();
+                    removeFavorite(activity, movieModel);
+//                    Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
+//                    startActivity(intent);
+                }
+            }
+        });
 //        MaterialFavoriteButton materialFavoriteButtonNice = findViewById(R.id.favorite_button);
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
@@ -207,6 +286,13 @@ public class SingleMovieActivity extends AppCompatActivity{
             favorites = new ArrayList<MovieModel>();
         favorites.add(movie);
         saveFavorites(context, favorites);
+    }
+    public void removeFavorite(Context context, MovieModel movie) {
+        ArrayList<MovieModel> favorites = getFavorites(context);
+        if (favorites != null) {
+            favorites.remove(movie);
+            saveFavorites(context, favorites);
+        }
     }
 
 //    public boolean checkFavoriteItem(MovieModel checkProduct) {

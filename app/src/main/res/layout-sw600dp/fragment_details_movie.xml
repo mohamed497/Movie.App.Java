@@ -3,27 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
 
     <LinearLayout
-        android:weightSum="2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/large_details"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
 
         <LinearLayout
-            android:layout_weight="1"
+
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+<!--            android:layout_weight="1"-->
+
 
             <ImageView
                 android:id="@+id/single_movieImg"
@@ -31,6 +38,30 @@
                 android:layout_height="180dp"
                 android:src="@drawable/ic_launcher_background"
                 tools:layout_editor_absoluteX="-27dp" />
+            <com.github.ivbaranov.mfb.MaterialFavoriteButton
+                android:visibility="gone"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:id="@+id/favorite_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentRight="true"
+
+                android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/single_overView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:text="TITLE"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/single_title"
@@ -42,26 +73,24 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/single_overView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:gravity="center"
-                android:text="TITLE"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/review_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
         </LinearLayout>
-
-
     </LinearLayout>
+
+    </ScrollView>
+
 
 
 
