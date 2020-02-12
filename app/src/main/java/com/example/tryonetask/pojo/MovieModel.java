@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import java.util.Comparator;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -100,5 +101,17 @@ public class MovieModel implements Parcelable{
     }
 
 
-
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj)
+            return true;
+//        if (obj == null)
+//            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MovieModel other = (MovieModel) obj;
+        if (id != other.id)
+            return false;
+        return true;
+    }
 }

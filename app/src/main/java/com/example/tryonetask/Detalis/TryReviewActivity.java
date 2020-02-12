@@ -60,6 +60,7 @@ public class TryReviewActivity extends AppCompatActivity {
     boolean check;
 
     SingleMovieActivity singleMovieActivity = new SingleMovieActivity();
+    MainActivity mainActivity = new MainActivity();
 
 
     @Override
@@ -118,43 +119,40 @@ public class TryReviewActivity extends AppCompatActivity {
 
         }
         else {
+            movie = mainActivity.getFavorites(TryReviewActivity.this);
 
-//            FragmentManager fm = getSupportFragmentManager();
-//
-//            DetailsFragment fragment = (DetailsFragment) fm.findFragmentById(R.id.largeDetails);
-            FragmentManager fm = getSupportFragmentManager();
-            DetailsFragment fragment = (DetailsFragment) fm.findFragmentByTag("TagName");
+            if (mainActivity.getFavorites(TryReviewActivity.this) != null){
 
-            if(fragment != null){
-
-                movie = fragment.getFavorites(TryReviewActivity.this);
                 for (int i = 0; i < movie.size(); i++) {
                     String title = movie.get(i).getTitle();
                     String poster = movie.get(i).getPoster_path();
                     if (!checkFavoriteItem(movie.get(i))) {
-                        movieList.add(new MovieModel(title, poster));
-                        adapter = new MovieAdapter();
-                        adapter.setList(movieList);
-                        recyclerView.setAdapter(adapter);
-                    } else {
                         Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
-                        Log.d("movie", "MOVIE == :" + title);
-                        adapter = new MovieAdapter();
-                        adapter.setList(movieList);
-                        recyclerView.setAdapter(adapter);
+
+                    } else {
+//                        movieList.get(i);
+//                        Log.d("movie", "MOVIE == :" + title);
+//                        adapter = new MovieAdapter();
+//                        adapter.setList(movieList);
+//                        recyclerView.setAdapter(adapter);
+                        movieList.add(new MovieModel(title, poster));
+//                        movieList.remove(movie.get(movie.size()-1));
+                        Log.d("Size", "SIZE__ : = "+movie.size());
                     }
+                    adapter = new MovieAdapter();
+                    adapter.setList(movieList);
+                    recyclerView.setAdapter(adapter);
 
                 }
             }
 
         }
-        
 
     }
 
     public boolean checkFavoriteItem(MovieModel checkProduct) {
         boolean check = false;
-        List<MovieModel> favorites = singleMovieActivity.getFavorites(TryReviewActivity.this);
+        List<MovieModel> favorites = mainActivity.getFavorites(TryReviewActivity.this);
         if (favorites != null) {
             for (MovieModel movie : favorites) {
                 if (movie.equals(checkProduct)) {

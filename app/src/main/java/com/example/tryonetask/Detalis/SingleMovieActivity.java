@@ -145,51 +145,9 @@ public class SingleMovieActivity extends AppCompatActivity{
             myFrag.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,myFrag).commit();
 
-        }else{
-
         }
-
-
-
-
-//        Bundle bundle = new Bundle();
-//        bundle.putString("NAME_KEY", movieTitle);
-//        bundle.putInt("YEAR_KEY", Integer.valueOf(movieId));
+//        else{
 //
-//        //PASS OVER THE BUNDLE TO OUR FRAGMENT
-//        DetailsFragment myFragment = new DetailsFragment();
-//        myFragment.setArguments(bundle);
-
-
-        //THEN NOW SHOW OUR FRAGMENT
-//        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,myFragment).commit();
-//
-//        Bundle bundle = new Bundle();
-//        bundle.putString("edttext", "From Activity");
-//// set Fragmentclass Arguments
-//        DetailsFragment fragobj = new DetailsFragment();
-//        fragobj.setArguments(bundle);
-
-//        Intent intent = new Intent(activity, MainActivity.class);
-//        intent.putExtra("EXTRA_SESSION_ID", movieTitle);
-//        startActivity(intent);
-
-
-
-
-//        Bundle intent = getIntent().getExtras();
-//        if (intent != null) {
-//
-//            movieId = intent.getInt("MOVIE_ID");
-//            overView = intent.getString("MOVIE_OVERVIEW");
-//            Log.d("zxc","moview OverView : " +overView);
-//            movieTitle = intent.getString("MOVIE_TITLE");
-//            Log.d("zxc","movie id : "+movieId);
-//            Log.d("zxc","movie title : "+movieTitle);
-//
-//            poster = intent.getString("MOVIE_POSTER");
-//            Log.d("zxc","movie poster : "+poster);
-//            imgPoster = "http://image.tmdb.org/t/p/w500"+poster;
 //        }
 
 
@@ -199,13 +157,11 @@ public class SingleMovieActivity extends AppCompatActivity{
             @Override
             public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
                 if (favorite){
-                    Snackbar.make(buttonView, "Added to Favorite",
-                            Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(buttonView, "Added to Favorite",Snackbar.LENGTH_SHORT).show();
                     Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
                     startActivity(intent);
                 }else{
-                    Snackbar.make(buttonView, "Removed from Favorite",
-                            Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(buttonView, "Removed from Favorite",Snackbar.LENGTH_SHORT).show();
                     removeFavorite(activity, movieModel);
 //                    Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
 //                    startActivity(intent);
@@ -295,19 +251,6 @@ public class SingleMovieActivity extends AppCompatActivity{
         }
     }
 
-//    public boolean checkFavoriteItem(MovieModel checkProduct) {
-//        boolean check = false;
-//        List<MovieModel> favorites = singleMovieActivity.getFavorites(TryReviewActivity.this);
-//        if (favorites != null) {
-//            for (MovieModel movie : favorites) {
-//                if (movie.equals(checkProduct)) {
-//                    check = true;
-//                    break;
-//                }
-//            }
-//        }
-//        return check;
-//    }
 
     public ArrayList<MovieModel> getFavorites(Context context) {
         SharedPreferences settings;
