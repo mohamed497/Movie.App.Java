@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,19 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
 
-
-
-//        Bundle intent = getIntent().getExtras();
-//        if( intent != null){
-//            String sessionId = intent.getString("EXTRA_SESSION_ID");
-//            Log.d("sessionID","SESSION : "+sessionId);
-//        }
-
-
-
-//        Toolbar toolbar = findViewById(R.id.toolbarr);
-//        setSupportActionBar(toolbar);
-
         boolean mIsDualPane = false;
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -80,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (mIsDualPane){
+
             NavigationView navigationView = findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
@@ -132,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bundle.putParcelable("MOVIE",movieModel);
             DetailsFragment myFrag = new DetailsFragment();
             myFrag.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,myFrag).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,myFrag,"TagName").addToBackStack(null).commit();
 //            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,
 //                    new DetailsFragment()).commit();
 
@@ -146,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TabLayout tabLayout = findViewById(R.id.tablLayOut);
             tabLayout.setupWithViewPager(mViewPager);
         }
-
 
     }
 
@@ -176,10 +164,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
-
             drawerLayout.closeDrawer(GravityCompat.START);
         else
             super.onBackPressed();
-
     }
 }

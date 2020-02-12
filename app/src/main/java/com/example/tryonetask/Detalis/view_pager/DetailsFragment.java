@@ -1,6 +1,7 @@
 package com.example.tryonetask.Detalis.view_pager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.tryonetask.Detalis.DetailsViewModel;
 import com.example.tryonetask.Detalis.SingleMovieActivity;
+import com.example.tryonetask.Detalis.TryReviewActivity;
 import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
 import com.example.tryonetask.Detalis.video.VideoAdapter;
 import com.example.tryonetask.R;
@@ -68,19 +70,9 @@ public class DetailsFragment extends Fragment  {
 
         detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
 
-
-
-//        if(getArguments() != null){
-//            String z = getArguments().getString("edttext");
-//            Log.d("zzz","zzzzzzzzzzz : : "+z);
-//        }
-//
-//
-//        if (getArguments() != null) {
-//            String mParam1 = getArguments().getString("params");
-//            Log.d("mParam","mParam : : "+mParam1);
-//        }
-
+        movieTitle = view.findViewById(R.id.single_title);
+        movieOverView = view.findViewById(R.id.single_overView);
+        movieImg = view.findViewById(R.id.single_movieImg);
 
 
         recyclerView = view.findViewById(R.id.recycler);
@@ -111,8 +103,17 @@ public class DetailsFragment extends Fragment  {
                 movieOverViewFromActivity = bundle.getString("MOVIE_OVERVIEW");
                 moviePosterFromActivity = bundle.getString("MOVIE_POSTER");
                 movieIdFromActivity = bundle.getInt("MOVIE_ID");
+                //\\ //\\
                 movieModel = bundle.getParcelable("MOVIE");
-                Log.d("zzz","zzzzzzzzzzz : : "+movieTitleFromActivity);
+                if (movieModel != null) {
+                    movieModel.setTitle(movieTitleFromActivity);
+                    movieModel.setPoster_path(moviePosterFromActivity);
+                    movieModel.setOverview(movieOverViewFromActivity);
+                    movieModel.id = movieIdFromActivity;
+//                    Log.d("zzz","wwwwwww : : "+movieModel.getTitle());
+
+                }
+//                Log.d("zzz","zzzzzzzzzzz : : "+movieTitleFromActivity);
 
             }
 
@@ -132,6 +133,9 @@ public class DetailsFragment extends Fragment  {
                         reviewAdapter.setList(reviewModels);
                         recycler.setAdapter(reviewAdapter);
                     }
+                    else{
+                        movieTitle.setText("SELECT A MOVIE ! ");
+                    }
                 }
             });
 
@@ -141,7 +145,12 @@ public class DetailsFragment extends Fragment  {
                     if(favorite){
                         Snackbar.make(buttonView, "Added to Favorite",
                                 Snackbar.LENGTH_SHORT).show();
-                        addFavorite(view.getContext(),movieModel);
+
+                            addFavorite(view.getContext(),movieModel);
+                            Intent intent = new Intent(view.getContext(),TryReviewActivity.class);
+                            startActivity(intent);
+
+//                        ((TryReviewActivity)getActivity()).();
                     }
                     else {
                         Snackbar.make(buttonView, "Removed from Favorite",
@@ -149,7 +158,6 @@ public class DetailsFragment extends Fragment  {
                     }
                 }
             });
-
 
         }
         else{
@@ -163,9 +171,7 @@ public class DetailsFragment extends Fragment  {
 
 
         }
-        movieTitle = view.findViewById(R.id.single_title);
-        movieOverView = view.findViewById(R.id.single_overView);
-        movieImg = view.findViewById(R.id.single_movieImg);
+
 
         Glide.with(view.getContext()).load(BASE_URL_IMG+moviePosterFromActivity).into(movieImg);
 

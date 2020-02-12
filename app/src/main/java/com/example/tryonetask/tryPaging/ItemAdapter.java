@@ -22,6 +22,7 @@ import com.example.tryonetask.ui.main.MainActivity;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,14 +80,14 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
                     }
                     if(x){
                         Intent intent = new Intent(mCtx, MainActivity.class);
-//                intent.putExtra("MOVIE_ID",movie.id);
                         intent.putExtra("movie",movie);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra("MOVIE_OVERVIEW",movie.getOverview());
-//                intent.putExtra("MOVIE_TITLE",movie.getTitle());
-//                intent.putExtra("MOVIE_POSTER",movie.getPoster_path());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mCtx.startActivity(intent);
+
+//                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                        DetailsFragment myFragment = new DetailsFragment();
+//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer , myFragment).addToBackStack(null).commit();
+
                     }
                     else
                     {

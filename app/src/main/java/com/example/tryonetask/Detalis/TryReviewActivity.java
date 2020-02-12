@@ -1,6 +1,7 @@
 package com.example.tryonetask.Detalis;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,12 +17,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
+import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
@@ -54,7 +57,7 @@ public class TryReviewActivity extends AppCompatActivity {
 
     private static final String PREFS_TAG = "SharedPrefs";
     private static final String PRODUCT_TAG = "MyProduct";
-
+    boolean check;
 
     SingleMovieActivity singleMovieActivity = new SingleMovieActivity();
 
@@ -65,39 +68,87 @@ public class TryReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_try_review);
 
 
+
+
         recyclerView = findViewById(R.id.recyclerReview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 //
+
+        check = false;
+        textTitle = findViewById(R.id.get_ttitle);
+
+        if (textTitle != null) {
+            check = textTitle.getVisibility() == View.VISIBLE;
+        }
         movieList = new ArrayList<>();
 
         List<MovieModel> movie;
 
-        movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
-//        if (movie != null){
-//            Log.d("zxc", "movie : "+movie.get(0));
-//
-//        }
+        if (!check){
+            movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
+
+            if (singleMovieActivity.getFavorites(TryReviewActivity.this) != null){
+                Log.d("movie_movie","movie"+movie);
 
 
-        for (int i=0;i<movie.size();i++){
-            String title = movie.get(i).getTitle();
-            String poster = movie.get(i).getPoster_path();
-            if (!checkFavoriteItem(movie.get(i))){
-                movieList.add(new MovieModel(title,poster));
-                adapter = new MovieAdapter();
-                adapter.setList(movieList);
-                recyclerView.setAdapter(adapter);
-            }
-            else{
-                Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
-                Log.d("movie", "MOVIE == :"+title);
-                adapter = new MovieAdapter();
-                adapter.setList(movieList);
-                recyclerView.setAdapter(adapter);
+
+                for (int i=0;i<movie.size();i++){
+                    if(movie.get(i) != null) {
+                        String title = movie.get(i).getTitle();
+                        String poster = movie.get(i).getPoster_path();
+//                        if (!checkFavoriteItem(movie.get(i))){
+                            movieList.add(new MovieModel(title,poster));
+                            adapter = new MovieAdapter();
+                            adapter.setList(movieList);
+                            recyclerView.setAdapter(adapter);
+//                        }
+//                        else{
+//                            Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
+//                            Log.d("movie", "MOVIE == :"+title);
+//                            adapter = new MovieAdapter();
+//                            adapter.setList(movieList);
+//                            recyclerView.setAdapter(adapter);
+//                        }
+                    }
+
+
+                }
             }
 
         }
+        else {
+
+//            FragmentManager fm = getSupportFragmentManager();
+//
+//            DetailsFragment fragment = (DetailsFragment) fm.findFragmentById(R.id.largeDetails);
+            FragmentManager fm = getSupportFragmentManager();
+            DetailsFragment fragment = (DetailsFragment) fm.findFragmentByTag("TagName");
+
+            if(fragment != null){
+
+                movie = fragment.getFavorites(TryReviewActivity.this);
+                for (int i = 0; i < movie.size(); i++) {
+                    String title = movie.get(i).getTitle();
+                    String poster = movie.get(i).getPoster_path();
+                    if (!checkFavoriteItem(movie.get(i))) {
+                        movieList.add(new MovieModel(title, poster));
+                        adapter = new MovieAdapter();
+                        adapter.setList(movieList);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
+                        Log.d("movie", "MOVIE == :" + title);
+                        adapter = new MovieAdapter();
+                        adapter.setList(movieList);
+                        recyclerView.setAdapter(adapter);
+                    }
+
+                }
+            }
+
+        }
+        
 
     }
 
