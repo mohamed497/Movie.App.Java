@@ -23,6 +23,8 @@ import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
 import com.example.tryonetask.pojo.videos_data.VideoModel;
+import com.example.tryonetask.tryPaging.ItemAdapter;
+import com.example.tryonetask.tryPaging.OnTextClickListener;
 import com.example.tryonetask.ui.ViewPager.PopularMovieFragment;
 import com.example.tryonetask.ui.main.MainActivity;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
@@ -45,7 +47,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by Alaa Moaataz on 2020-02-05.
  */
-public class DetailsFragment extends Fragment  {
+public class DetailsFragment extends Fragment  implements OnTextClickListener {
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
     TextView movieTitle,movieOverView ;
     ImageView movieImg;
@@ -90,6 +92,10 @@ public class DetailsFragment extends Fragment  {
         }
 
         if(mIsDualPane){
+            OnTextClickListener x = this;
+
+            recyclerView.setAdapter(new ItemAdapter(view.getContext(),x));
+
 
             materialFavoriteButtonNice = view.findViewById(R.id.favorite_button);
 
@@ -113,7 +119,7 @@ public class DetailsFragment extends Fragment  {
 //                    Log.d("zzz","wwwwwww : : "+movieModel.getTitle());
 
                 }
-//                Log.d("zzz","zzzzzzzzzzz : : "+movieTitleFromActivity);
+                Log.d("zzz","zzzzzzzzzzz : : "+movieTitleFromActivity);
 
             }
 
@@ -148,6 +154,7 @@ public class DetailsFragment extends Fragment  {
 
                             addFavorite(view.getContext(),movieModel);
                             Intent intent = new Intent(view.getContext(),TryReviewActivity.class);
+                            intent.putExtra("movie_movie",movieModel);
                             startActivity(intent);
 
 //                        ((TryReviewActivity)getActivity()).();
@@ -261,5 +268,11 @@ public class DetailsFragment extends Fragment  {
 
         return (ArrayList<MovieModel>) favorites;
 
+    }
+
+    @Override
+    public void onTextClick(MovieModel data) {
+
+        Log.e("Listener", "NEW MOVIE : : " + data.getTitle());
     }
 }

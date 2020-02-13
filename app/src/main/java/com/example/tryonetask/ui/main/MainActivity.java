@@ -133,10 +133,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bundle.putParcelable("MOVIE",movieModel);
             DetailsFragment myFrag = new DetailsFragment();
             myFrag.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,myFrag,"TagName").addToBackStack(null).commit();
+//            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,myFrag,"TagName").addToBackStack(null).commit();
+
 //            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,
 //                    new DetailsFragment()).commit();
 
+//            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,
+//                    new DetailsFragment()).commit();
 
             materialFavoriteButtonNice = findViewById(R.id.favorite_button);
             materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {

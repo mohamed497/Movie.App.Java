@@ -3,14 +3,18 @@ package com.example.tryonetask.Detalis;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.tryonetask.Detalis.SingleMovieActivity;
+import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.data.RetrofitClient;
+import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.pojo.reviews_data.ListingReviewResponse;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
 import com.example.tryonetask.pojo.videos_data.ListingVideoResponse;
 import com.example.tryonetask.pojo.videos_data.VideoModel;
 import com.example.tryonetask.repo.Repo;
+import com.example.tryonetask.tryPaging.OnTextClickListener;
 
 import java.util.List;
 
@@ -65,6 +69,7 @@ public class DetailsViewModel extends ViewModel {
                 })
         );
     }
+
 
 
 }

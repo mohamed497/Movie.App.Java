@@ -69,7 +69,17 @@ public class TryReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_try_review);
 
 
+        FragmentManager fm = getSupportFragmentManager();
 
+//if you added fragment via layout xml
+        DetailsFragment fragment = (DetailsFragment)fm.findFragmentByTag("Fragment_Tag");
+        if(fragment != null){
+
+            fragment.getFavorites(activity);
+
+            Log.d("ana","henaa"+fragment.getFavorites(activity));
+
+        }
 
         recyclerView = findViewById(R.id.recyclerReview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -119,32 +129,32 @@ public class TryReviewActivity extends AppCompatActivity {
 
         }
         else {
-            movie = mainActivity.getFavorites(TryReviewActivity.this);
-
-            if (mainActivity.getFavorites(TryReviewActivity.this) != null){
-
-                for (int i = 0; i < movie.size(); i++) {
-                    String title = movie.get(i).getTitle();
-                    String poster = movie.get(i).getPoster_path();
-                    if (!checkFavoriteItem(movie.get(i))) {
-                        Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
-
-                    } else {
-//                        movieList.get(i);
-//                        Log.d("movie", "MOVIE == :" + title);
-//                        adapter = new MovieAdapter();
-//                        adapter.setList(movieList);
-//                        recyclerView.setAdapter(adapter);
-                        movieList.add(new MovieModel(title, poster));
-//                        movieList.remove(movie.get(movie.size()-1));
-                        Log.d("Size", "SIZE__ : = "+movie.size());
-                    }
-                    adapter = new MovieAdapter();
-                    adapter.setList(movieList);
-                    recyclerView.setAdapter(adapter);
-
-                }
-            }
+//            movie = mainActivity.getFavorites(TryReviewActivity.this);
+//
+//            if (mainActivity.getFavorites(TryReviewActivity.this) != null){
+//
+//                for (int i = 0; i < movie.size(); i++) {
+//                    String title = movie.get(i).getTitle();
+//                    String poster = movie.get(i).getPoster_path();
+//                    if (!checkFavoriteItem(movie.get(i))) {
+//                        Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
+//
+//                    } else {
+////                        movieList.get(i);
+////                        Log.d("movie", "MOVIE == :" + title);
+////                        adapter = new MovieAdapter();
+////                        adapter.setList(movieList);
+////                        recyclerView.setAdapter(adapter);
+//                        movieList.add(new MovieModel(title, poster));
+////                        movieList.remove(movie.get(movie.size()-1));
+//                        Log.d("Size", "SIZE__ : = "+movie.size());
+//                    }
+//                    adapter = new MovieAdapter();
+//                    adapter.setList(movieList);
+//                    recyclerView.setAdapter(adapter);
+//
+//                }
+//            }
 
         }
 

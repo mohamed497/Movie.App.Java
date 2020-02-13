@@ -3,7 +3,6 @@ package com.example.tryonetask.tryPaging;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.tryonetask.Detalis.TryReviewActivity;
-import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.pojo.MovieModel;
-import com.example.tryonetask.ui.main.MainActivity;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,9 +33,14 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
     private List<MovieModel> movieList;
 
-    public ItemAdapter(Context mCtx){
+
+    private final OnTextClickListener listener;
+
+
+    public ItemAdapter(Context mCtx, OnTextClickListener listener){
         super(DIFF_CALLBACK);
         this.mCtx = mCtx;
+        this.listener = listener;
     }
 
     @NonNull
@@ -56,7 +56,6 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
         MovieModel movie = getItem(position);
 
 
-
         if(movie != null){
 
             holder.title.setText(movie.getTitle());
@@ -67,27 +66,32 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
                 @Override
                 public void onClick(View v) {
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("edttext", "From Activity");
-                    // set Fragmentclass Arguments
-                    DetailsFragment fragobj = new DetailsFragment();
-                    fragobj.setArguments(bundle);
-
-
-                    boolean x = false;
+                    boolean check = false;
                     if (holder.newTitle != null){
-                        x = holder.newTitle.getVisibility() == View.VISIBLE;
+                        check = holder.newTitle.getVisibility() == View.VISIBLE;
                     }
-                    if(x){
-                        Intent intent = new Intent(mCtx, MainActivity.class);
-                        intent.putExtra("movie",movie);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mCtx.startActivity(intent);
+                    if(check){
+                        if(listener != null){
+                            listener.onTextClick(movie);
+                        }
 
+
+//                        Intent intent = new Intent(mCtx, MainActivity.class);
+//                        intent.putExtra("movie",movie);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        mCtx.startActivity(intent);
+
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("MOVIE_TITLE", movie.getTitle());
+//                        bundle.putString("MOVIE_OVERVIEW", movie.getOverview());
+//                        bundle.putString("MOVIE_POSTER", movie.getPoster_path());
+//                        bundle.putInt("MOVIE_ID",movie.id);
+//                        bundle.putParcelable("MOVIE",movie);
+//                        DetailsFragment myFrag = new DetailsFragment();
+//                        myFrag.setArguments(bundle);
 //                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
 //                        DetailsFragment myFragment = new DetailsFragment();
-//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer , myFragment).addToBackStack(null).commit();
-
+//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.zxc , myFragment).addToBackStack(null).commit();
                     }
                     else
                     {

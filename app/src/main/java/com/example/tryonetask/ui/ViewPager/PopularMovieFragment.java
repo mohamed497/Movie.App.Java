@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.tryonetask.Detalis.SingleMovieFragment;
+import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.tryCache.MovieDao;
@@ -51,34 +52,35 @@ public class PopularMovieFragment extends BaseFragment{
 
 
         if(isNetworkConnected(view.getContext())) {
-
-            super.itemViewModel.PopularMovies();
-            super.itemViewModel.itemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
-                @Override
-                public void onChanged(PagedList<MovieModel> movieModels) {
-                    adapter.submitList(movieModels);
-                    if(movieModels != null){
-                        roomViewModel.insert(movieModels);
-                        Log.d("zxcc","z"+movieModels);
+//            if(!isTablet(view.getContext())){
+                super.itemViewModel.PopularMovies();
+                super.itemViewModel.itemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
+                    @Override
+                    public void onChanged(PagedList<MovieModel> movieModels) {
+                        adapter.submitList(movieModels);
+                        if(movieModels != null){
+                            roomViewModel.insert(movieModels);
+                            Log.d("zxcc","z"+movieModels);
 //                        movieDao.insertMovies(movieModels);
-                    }
+                        }
 
-                }
-            });
-            super.recyclerView.setAdapter(super.adapter);
-        }
-        else {
-            Toast.makeText(view.getContext(), "No internet found. Showing cached list in the view", Toast.LENGTH_SHORT).show();
-            roomViewModel.getmAllMovie().observe(this, new Observer<List<MovieModel>>() {
-                @Override
-                public void onChanged(List<MovieModel> movieModels) {
-                    MovieAdapter movieAdapter = new MovieAdapter();
-                    movieAdapter.setList(movieModels);
-                    Log.d("zxc","hello" + ItemDataSource.getMoviesToDB);
-                    recyclerView.setAdapter(movieAdapter);
-                }
-            });
-        }
+                    }
+                });
+                super.recyclerView.setAdapter(super.adapter);
+            }
+            else {
+                Toast.makeText(view.getContext(), "No internet found. Showing cached list in the view", Toast.LENGTH_SHORT).show();
+                roomViewModel.getmAllMovie().observe(this, new Observer<List<MovieModel>>() {
+                    @Override
+                    public void onChanged(List<MovieModel> movieModels) {
+                        MovieAdapter movieAdapter = new MovieAdapter();
+                        movieAdapter.setList(movieModels);
+                        Log.d("zxc","hello" + ItemDataSource.getMoviesToDB);
+                        recyclerView.setAdapter(movieAdapter);
+                    }
+                });
+            }
+
 
     }
 
@@ -97,5 +99,22 @@ public class PopularMovieFragment extends BaseFragment{
     }
 
 
+    @Override
+    public void onTextClick(MovieModel data) {
+        Bundle bundle = new Bundle();
+        bundle.putString("MOVIE_TITLE", data.getTitle());
+        bundle.putString("MOVIE_OVERVIEW", data.getOverview());
+        bundle.putString("MOVIE_POSTER", data.getPoster_path());
+        bundle.putInt("MOVIE_ID",data.id);
+//        bundle.putParcelable("MOVIE",movieModel);
+        DetailsFragment myFrag = new DetailsFragment();
+        myFrag.setArguments(bundle);
 
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_details,
+                myFrag,"Fragment_Tag").commit();
+
+//        Log.d("ana", "henanaaaa ",data);
+        Toast.makeText(getActivity(), "TITLE = : "+data.getTitle(), Toast.LENGTH_SHORT).show();
+
+    }
 }

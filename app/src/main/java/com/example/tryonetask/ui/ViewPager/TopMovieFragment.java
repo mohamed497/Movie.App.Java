@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.tryCache.RoomViewModel;
@@ -89,4 +90,22 @@ public class TopMovieFragment extends BaseFragment {
         super.onStop();
     }
 
+    @Override
+    public void onTextClick(MovieModel data) {
+        Bundle bundle = new Bundle();
+        bundle.putString("MOVIE_TITLE", data.getTitle());
+        bundle.putString("MOVIE_OVERVIEW", data.getOverview());
+        bundle.putString("MOVIE_POSTER", data.getPoster_path());
+        bundle.putInt("MOVIE_ID",data.id);
+//        bundle.putParcelable("MOVIE",movieModel);
+        DetailsFragment myFrag = new DetailsFragment();
+        myFrag.setArguments(bundle);
+
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_details,
+                myFrag).commit();
+
+//        Log.d("ana", "henanaaaa ",data);
+        Toast.makeText(getActivity(), "TITLE = : "+data.getTitle(), Toast.LENGTH_SHORT).show();
+
+    }
 }
