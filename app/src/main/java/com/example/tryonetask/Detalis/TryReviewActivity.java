@@ -28,6 +28,7 @@ import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
+import com.example.tryonetask.tryPaging.ItemAdapter;
 import com.example.tryonetask.ui.main.MainActivity;
 import com.example.tryonetask.ui.main.MovieAdapter;
 import com.google.gson.Gson;
@@ -69,17 +70,17 @@ public class TryReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_try_review);
 
 
-        FragmentManager fm = getSupportFragmentManager();
-
-//if you added fragment via layout xml
-        DetailsFragment fragment = (DetailsFragment)fm.findFragmentByTag("Fragment_Tag");
-        if(fragment != null){
-
-            fragment.getFavorites(activity);
-
-            Log.d("ana","henaa"+fragment.getFavorites(activity));
-
-        }
+//        FragmentManager fm = getSupportFragmentManager();
+//
+////if you added fragment via layout xml
+//        DetailsFragment fragment = (DetailsFragment)fm.findFragmentByTag("Fragment_Tag");
+//        if(fragment != null){
+//
+//            fragment.getFavorites(activity);
+//
+//            Log.d("ana","henaa"+fragment.getFavorites(activity));
+//
+//        }
 
         recyclerView = findViewById(R.id.recyclerReview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -97,6 +98,7 @@ public class TryReviewActivity extends AppCompatActivity {
         List<MovieModel> movie;
 
         if (!check){
+
             movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
 
             if (singleMovieActivity.getFavorites(TryReviewActivity.this) != null){
@@ -129,6 +131,20 @@ public class TryReviewActivity extends AppCompatActivity {
 
         }
         else {
+            ItemAdapter itemAdapter = new ItemAdapter(this,null);
+            movie = itemAdapter.getFavorites(this);
+            if (itemAdapter.getFavorites(this)!= null){
+
+                for (int i=0; i < movie.size(); i++){
+                    String title = movie.get(i).getTitle();
+                    String poster = movie.get(i).getPoster_path();
+                    movieList.add(new MovieModel(title, poster));
+                    adapter = new MovieAdapter();
+                    adapter.setList(movieList);
+                    recyclerView.setAdapter(adapter);
+
+                }
+            }
 //            movie = mainActivity.getFavorites(TryReviewActivity.this);
 //
 //            if (mainActivity.getFavorites(TryReviewActivity.this) != null){
