@@ -103,10 +103,11 @@ public class MovieModel implements Parcelable{
 
     @Override
     public boolean equals(@Nullable Object obj) {
+
         if (this == obj)
             return true;
-//        if (obj == null)
-//            return false;
+        if (obj == null)
+            return false;
         if (getClass() != obj.getClass())
             return false;
         MovieModel other = (MovieModel) obj;

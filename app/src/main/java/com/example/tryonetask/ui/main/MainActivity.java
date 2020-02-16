@@ -79,8 +79,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (mIsDualPane){
 
-//            SharedPreferences preferences = getSharedPreferences("PRODUCT_APP", 0);
-//            preferences.edit().remove("Product_Favorite").commit();
             NavigationView navigationView = findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
@@ -94,8 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navigationView.setCheckedItem(R.id.nav_popularMovie);
             }
 
-//            Toast.makeText(MainActivity.this, "TABLET", Toast.LENGTH_SHORT).show();
-
             Toolbar toolbar = findViewById(R.id.toolbarr);
             setSupportActionBar(toolbar);
 
@@ -105,8 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             drawerLayout.addDrawerListener(toggle);
             toggle.syncState();
-
-//            FrameLayout frameLayout = findViewById(R.id.largeDetails);
 
             Intent intentThatStartedThisActivity = getIntent();
             if (intentThatStartedThisActivity.hasExtra("movie")){
@@ -137,29 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,
 //                    new DetailsFragment()).commit();
-
-//            getSupportFragmentManager().beginTransaction().replace(R.id.largeDetails,
-//                    new DetailsFragment()).commit();
-
-            materialFavoriteButtonNice = findViewById(R.id.favorite_button);
-            materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-                @Override
-                public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                    if (favorite){
-                        Snackbar.make(buttonView, "Added to Favorite",
-                                Snackbar.LENGTH_SHORT).show();
-                        addFavorite(MainActivity.this,movieModel);
-                        Intent intent = new Intent(MainActivity.this, TryReviewActivity.class);
-                        startActivity(intent);
-                    }
-                    else{
-                        Snackbar.make(buttonView, "Removed from Favorite",
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
-
 
         }
         else{
@@ -203,75 +174,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawerLayout.closeDrawer(GravityCompat.START);
         else
             super.onBackPressed();
-    }
-    public void saveFavorites(Context context, List<MovieModel> favorites) {
-        SharedPreferences settings;
-        SharedPreferences.Editor editor;
-
-        settings = context.getSharedPreferences(PREFS_NAME,
-                Context.MODE_PRIVATE);
-        editor = settings.edit();
-
-        Gson gson = new Gson();
-        String jsonFavorites = gson.toJson(favorites);
-
-        editor.putString(FAVORITES, jsonFavorites);
-
-        editor.commit();
-    }
-
-    public void addFavorite(Context context, MovieModel movie) {
-        List<MovieModel> favorites = getFavorites(context);
-        if (favorites == null)
-            favorites = new ArrayList<MovieModel>();
-        favorites.add(movie);
-        saveFavorites(context, favorites);
-    }
-    public void removeFavorite(Context context, MovieModel movie) {
-        ArrayList<MovieModel> favorites = getFavorites(context);
-        if (favorites != null) {
-            favorites.remove(movie);
-            saveFavorites(context, favorites);
-        }
-    }
-
-
-
-//    public boolean checkFavoriteItem(MovieModel checkProduct) {
-//        boolean check = false;
-//        List<MovieModel> favorites = singleMovieActivity.getFavorites(TryReviewActivity.this);
-//        if (favorites != null) {
-//            for (MovieModel movie : favorites) {
-//                if (movie.equals(checkProduct)) {
-//                    check = true;
-//                    break;
-//                }
-//            }
-//        }
-//        return check;
-//    }
-
-    public ArrayList<MovieModel> getFavorites(Context context) {
-        SharedPreferences settings;
-        List<MovieModel> favorites;
-
-        settings = context.getSharedPreferences(PREFS_NAME,
-                Context.MODE_PRIVATE);
-
-        if (settings.contains(FAVORITES)) {
-            String jsonFavorites = settings.getString(FAVORITES, null);
-            Gson gson = new Gson();
-
-            MovieModel[] favoriteItems = gson.fromJson(jsonFavorites,
-                    MovieModel[].class);
-            favorites = Arrays.asList(favoriteItems);
-            favorites = new ArrayList<MovieModel>(favorites);
-
-        } else
-            return null;
-
-        return (ArrayList<MovieModel>) favorites;
-
     }
 
 }

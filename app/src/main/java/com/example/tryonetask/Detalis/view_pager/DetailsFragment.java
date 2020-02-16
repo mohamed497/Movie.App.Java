@@ -21,6 +21,7 @@ import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
 import com.example.tryonetask.Detalis.video.VideoAdapter;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
 import com.example.tryonetask.pojo.videos_data.VideoModel;
 import com.example.tryonetask.tryPaging.ItemAdapter;
@@ -49,19 +50,23 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class DetailsFragment extends Fragment  implements OnTextClickListener {
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
-    TextView movieTitle,movieOverView ;
+    private TextView movieTitle,movieOverView ;
     ImageView movieImg;
-    DetailsViewModel detailsViewModel;
-    RecyclerView recyclerView;
-    String movieTitleFromActivity,movieOverViewFromActivity,moviePosterFromActivity;
-    int movieIdFromActivity;
-    boolean mIsDualPane;
-    MovieModel movieModel;
+    private DetailsViewModel detailsViewModel;
+    private RecyclerView recyclerView;
+    private String movieTitleFromActivity,movieOverViewFromActivity,moviePosterFromActivity;
+    private String movieTitleFromActivityy,movieOverViewFromActivityy,moviePosterFromActivityy;
+    private int movieIdFromActivityy;
+    private int movieIdFromActivity;
+    private boolean mIsDualPane;
+    private MovieModel movieModel;
     SingleMovieActivity activity;
-    MaterialFavoriteButton materialFavoriteButtonNice;
+//    private MaterialFavoriteButton materialFavoriteButtonNice;
 
     public static final String PREFS_NAME = "PRODUCT_APP";
     public static final String FAVORITES = "Product_Favorite";
+
+    TopMovieModel topMovieModel;
 
 
 
@@ -97,7 +102,7 @@ public class DetailsFragment extends Fragment  implements OnTextClickListener {
             recyclerView.setAdapter(new ItemAdapter(view.getContext(),x));
 
 
-            materialFavoriteButtonNice = view.findViewById(R.id.favorite_button);
+//            materialFavoriteButtonNice = view.findViewById(R.id.favorite_button);
 
 //            Toast.makeText(view.getContext(), "TABLET", Toast.LENGTH_SHORT).show();
 //            getChildFragmentManager().beginTransaction().add(R.id.large_details,
@@ -109,6 +114,13 @@ public class DetailsFragment extends Fragment  implements OnTextClickListener {
                 movieOverViewFromActivity = bundle.getString("MOVIE_OVERVIEW");
                 moviePosterFromActivity = bundle.getString("MOVIE_POSTER");
                 movieIdFromActivity = bundle.getInt("MOVIE_ID");
+
+                movieTitleFromActivityy = bundle.getString("MOVIE_TITLE");
+                movieOverViewFromActivityy = bundle.getString("MOVIE_OVERVIEW");
+                moviePosterFromActivityy = bundle.getString("MOVIE_POSTER");
+                movieIdFromActivityy = bundle.getInt("MOVIE_ID");
+
+
                 //\\ //\\
                 movieModel = bundle.getParcelable("MOVIE");
                 if (movieModel != null) {
@@ -119,7 +131,15 @@ public class DetailsFragment extends Fragment  implements OnTextClickListener {
 //                    Log.d("zzz","wwwwwww : : "+movieModel.getTitle());
 
                 }
-                Log.d("zzz","zzzzzzzzzzz : : "+movieTitleFromActivity);
+                if (topMovieModel != null) {
+                    topMovieModel.setTitle(movieTitleFromActivityy);
+                    topMovieModel.setPoster_path(moviePosterFromActivityy);
+                    topMovieModel.setOverview(movieOverViewFromActivityy);
+                    topMovieModel.id = movieIdFromActivity;
+//                    Log.d("zzz","wwwwwww : : "+movieModel.getTitle());
+
+                }
+//                Log.d("zzz","zzzzzzzzzzz : : "+movieTitleFromActivity);
 
             }
 
@@ -134,7 +154,7 @@ public class DetailsFragment extends Fragment  implements OnTextClickListener {
                 @Override
                 public void onChanged(List<ReviewModel> reviewModels) {
                     if (reviewModels != null) {
-                        materialFavoriteButtonNice.setVisibility(View.VISIBLE);
+//                        materialFavoriteButtonNice.setVisibility(View.VISIBLE);
                         ReviewAdapter reviewAdapter = new ReviewAdapter(view.getContext());
                         reviewAdapter.setList(reviewModels);
                         recycler.setAdapter(reviewAdapter);
@@ -145,26 +165,27 @@ public class DetailsFragment extends Fragment  implements OnTextClickListener {
                 }
             });
 
-            materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-                @Override
-                public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                    if(favorite){
-                        Snackbar.make(buttonView, "Added to Favorite",
-                                Snackbar.LENGTH_SHORT).show();
-
-                            addFavorite(view.getContext(),movieModel);
-                            Intent intent = new Intent(view.getContext(),TryReviewActivity.class);
-                            intent.putExtra("movie_movie",movieModel);
-                            startActivity(intent);
-
-//                        ((TryReviewActivity)getActivity()).();
-                    }
-                    else {
-                        Snackbar.make(buttonView, "Removed from Favorite",
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                }
-            });
+//            materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
+//                @Override
+//                public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+//                    if(favorite){
+//                        Snackbar.make(buttonView, "Added to Favorite",
+//                                Snackbar.LENGTH_SHORT).show();
+//
+//                            addFavorite(view.getContext(),movieModel);
+//
+//                            Intent intent = new Intent(view.getContext(),TryReviewActivity.class);
+//                            intent.putExtra("movie_movie",movieModel);
+//                            startActivity(intent);
+//
+////                        ((TryReviewActivity)getActivity()).();
+//                    }
+//                    else {
+//                        Snackbar.make(buttonView, "Removed from Favorite",
+//                                Snackbar.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
 
         }
         else{
@@ -273,6 +294,6 @@ public class DetailsFragment extends Fragment  implements OnTextClickListener {
     @Override
     public void onTextClick(MovieModel data) {
 
-        Log.e("Listener", "NEW MOVIE : : " + data.getTitle());
+//        Log.e("Listener", "NEW MOVIE : : " + data.getTitle());
     }
 }

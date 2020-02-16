@@ -2,6 +2,7 @@ package com.example.tryonetask.tryPaging;
 
 import com.example.tryonetask.data.RetrofitClient;
 import com.example.tryonetask.pojo.ListingResponse;
+import com.example.tryonetask.pojo.ListingTopResponse;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.pojo.TopMovieModel;
 import com.example.tryonetask.repo.Repo;
@@ -17,7 +18,7 @@ import io.reactivex.functions.BiConsumer;
 /**
  * Created by Alaa Moaataz on 2020-01-27.
  */
-public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
+public class TopDataSource extends PageKeyedDataSource<Integer, TopMovieModel> {
 
     public static final int PAGE_SIZE = 20;
     private static final int FIRST_PAGE = 1;
@@ -28,20 +29,20 @@ public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
 
 
     @Override
-    public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, MovieModel> callback) {
+    public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, TopMovieModel> callback) {
 
         compositeDisposable.add(
                 repo.topSinlgeMovie(FIRST_PAGE , PAGE_SIZE)
-                .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-                    @Override
-                    public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-                        if (listingResponse != null) {
-                            callback.onResult(listingResponse.results, null, FIRST_PAGE + 1);
-//                            getTopMoviesToDB = listingResponse.results;
+                        .subscribe(new BiConsumer<ListingTopResponse, Throwable>() {
+                            @Override
+                            public void accept(ListingTopResponse listingTopResponse, Throwable throwable) throws Exception {
+                                if (listingTopResponse != null) {
+                                    callback.onResult(listingTopResponse.results, null, FIRST_PAGE + 1);
+                                    getTopMoviesToDB = listingTopResponse.results;
 
-                        }
-                    }
-                })
+                                }
+                            }
+                        })
         );
 
 
@@ -49,38 +50,41 @@ public class TopDataSource extends PageKeyedDataSource<Integer, MovieModel> {
 
 
     @Override
-    public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, MovieModel> callback) {
+    public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, TopMovieModel> callback) {
 
-        compositeDisposable.add(repo.topSinlgeMovie(params.key , PAGE_SIZE)
-        .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-            @Override
-            public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-                Integer adjacentKey = (params.key > 1) ? params.key - 1 : null;
-                if (listingResponse != null) {
-                    callback.onResult(listingResponse.results, adjacentKey);
-                }
-            }
-        }));
+        compositeDisposable.add(
+                repo.topSinlgeMovie(params.key , PAGE_SIZE)
+                        .subscribe(new BiConsumer<ListingTopResponse, Throwable>() {
+                            @Override
+                            public void accept(ListingTopResponse listingTopResponse, Throwable throwable) throws Exception {
+                                Integer adjacentKey = (params.key > 1) ? params.key - 1 : null;
+                                if (listingTopResponse != null) {
+                                    callback.onResult(listingTopResponse.results, adjacentKey);
+                                }
+                            }
+                        })
+        );
 
 
 
     }
 
     @Override
-    public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, MovieModel> callback) {
+    public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, TopMovieModel> callback) {
 
-        compositeDisposable.add(repo.topSinlgeMovie(params.key , PAGE_SIZE)
-        .subscribe(new BiConsumer<ListingResponse, Throwable>() {
-            @Override
-            public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
-                if (listingResponse != null) {
-//                            Integer key = listingResponse != null ? params.key + 1 : null;
-                    Integer key =  params.key + 1;
+        compositeDisposable.add(
+                repo.topSinlgeMovie(params.key , PAGE_SIZE)
+                        .subscribe(new BiConsumer<ListingTopResponse, Throwable>() {
+                            @Override
+                            public void accept(ListingTopResponse listingTopResponse, Throwable throwable) throws Exception {
+                                if (listingTopResponse != null) {
+                                    Integer key =  params.key + 1;
 
-                    callback.onResult(listingResponse.results, key);
-                }
-            }
-        }));
+                                    callback.onResult(listingTopResponse.results, key);
+                                }
+                            }
+                        })
+        );
 
 
     }

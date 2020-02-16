@@ -1,6 +1,7 @@
 package com.example.tryonetask.tryPaging;
 
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
@@ -11,10 +12,10 @@ import androidx.paging.PageKeyedDataSource;
  */
 public class TopDataSourceFactory extends DataSource.Factory {
 
-    private MutableLiveData<PageKeyedDataSource<Integer, MovieModel>> TopLiveDataSource = new MutableLiveData<>();
+    private MutableLiveData<PageKeyedDataSource<Integer, TopMovieModel>> TopLiveDataSource = new MutableLiveData<>();
 
     @Override
-    public DataSource<Integer , MovieModel> create() {
+    public DataSource<Integer , TopMovieModel> create() {
         TopDataSource topDataSource = new TopDataSource();
 
         //posting the datasource to get the values
@@ -24,7 +25,7 @@ public class TopDataSourceFactory extends DataSource.Factory {
         return topDataSource;
     }
 
-    public MutableLiveData<PageKeyedDataSource<Integer, MovieModel>> getTopLiveDataSource() {
+    public MutableLiveData<PageKeyedDataSource<Integer, TopMovieModel>> getTopLiveDataSource() {
         return TopLiveDataSource;
     }
 }

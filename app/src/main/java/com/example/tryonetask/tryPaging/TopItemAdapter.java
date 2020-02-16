@@ -13,10 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.Detalis.TryReviewActivity;
 import com.example.tryonetask.R;
-import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -33,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by Alaa Moaataz on 2020-01-27.
  */
-public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemViewHolder> {
+public class TopItemAdapter extends PagedListAdapter<TopMovieModel, TopItemAdapter.ItemViewHolder> {
 
 
     public static final String PREFS_NAME = "PRODUCT_APP";
@@ -42,13 +43,13 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
     Context mCtx;
     private static final String BASE_URL_IMG = "http://image.tmdb.org/t/p/w500";
-    private List<MovieModel> movieList;
+    private List<TopMovieModel> movieList;
 
 
-    private final OnTextClickListener listener;
+    private final TopTextClickListener listener;
 
 
-    public ItemAdapter(Context mCtx, OnTextClickListener listener){
+    public TopItemAdapter(Context mCtx, TopTextClickListener listener){
         super(DIFF_CALLBACK);
         this.mCtx = mCtx;
         this.listener = listener;
@@ -65,8 +66,7 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        MovieModel movie = getItem(position);
-
+        TopMovieModel movie = getItem(position);
 
         if(movie != null){
 
@@ -81,7 +81,7 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
             holder.materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
                 @Override
                 public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                    if (favorite){
+                    if(favorite){
                         if(checkFavoriteItem(movie)){
                             Toast.makeText(mCtx, "Cant Add Movie Twice ! ! ", Toast.LENGTH_SHORT).show();
                         }
@@ -94,21 +94,20 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             mCtx.startActivity(intent);
                         }
-                    }
-                    else{
+                    }else{
                         removeFavorite(mCtx, movie);
-                        Snackbar.make(buttonView, "Removed from Favorite", Snackbar.LENGTH_SHORT).show();
-
+                        Snackbar.make(buttonView, "Removed SUCC !!!", Snackbar.LENGTH_SHORT).show();
                     }
                 }
             });
+
 
             if(check){
                 holder.img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(listener != null){
-                            listener.onTextClick(movie);
+                            listener.onTopTextClick(movie);
                         }
                     }
                 });
@@ -116,7 +115,7 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
                 holder.title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        Log.d("movieee","MOVIE == :"+movie);
+                        Log.d("movieee","MOVIE == :"+movie);
                         if(checkFavoriteItem(movie)){
                             Toast.makeText(mCtx, "Cant Add Movie Twice ! ! ", Toast.LENGTH_SHORT).show();
                         }
@@ -131,40 +130,23 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
                     }
                 });
 
-//                holder.materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-//                @Override
-//                public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-//                    if (favorite){
-//                        if(checkFavoriteItem(movie)){
-//                            Toast.makeText(mCtx, "Cant Add Movie Twice ! ! ", Toast.LENGTH_SHORT).show();
-//                        }
-//                        else{
-//                            Snackbar.make(buttonView, "Added to Favorite",
-//                                    Snackbar.LENGTH_SHORT).show();
-//                            addFavorite(mCtx,movie);
-//                            Intent intent = new Intent(mCtx, TryReviewActivity.class);
-//                            intent.putExtra("movie",movie);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            mCtx.startActivity(intent);
-//                        }
-//                    }
-//                    else{
-//                        removeFavorite(mCtx, movie);
-//                        Snackbar.make(buttonView, "Removed from Favorite", Snackbar.LENGTH_SHORT).show();
-//
-//                    }
-//                }
-//            });
+
 
             }
             else{
+
                 holder.img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         if(listener != null){
-                            listener.onTextClick(movie);
+                            listener.onTopTextClick(movie);
                         }
+                    }
+                });
+
+//                holder.img.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
 //                        Intent intent = new Intent(mCtx, SingleMovieActivity.class);
 ////                intent.putExtra("MOVIE_ID",movie.id);
 //                        intent.putExtra("movie",movie);
@@ -174,8 +156,8 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 ////                intent.putExtra("MOVIE_POSTER",movie.getPoster_path());
 //                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                        mCtx.startActivity(intent);
-                    }
-                });
+//                    }
+//                });
             }
 
 //            holder.img.setOnClickListener(new View.OnClickListener() {
@@ -235,16 +217,16 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
     }
 
-    private static DiffUtil.ItemCallback<MovieModel> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<MovieModel>() {
+    private static DiffUtil.ItemCallback<TopMovieModel> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<TopMovieModel>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull MovieModel oldItem, @NonNull MovieModel newItem) {
+                public boolean areItemsTheSame(@NonNull TopMovieModel oldItem, @NonNull TopMovieModel newItem) {
                     return oldItem.getTitle() == newItem.getTitle();
                 }
 
                 @SuppressLint("DiffUtilEquals")
                 @Override
-                public boolean areContentsTheSame(@NonNull MovieModel oldItem, @NonNull MovieModel newItem) {
+                public boolean areContentsTheSame(@NonNull TopMovieModel oldItem, @NonNull TopMovieModel newItem) {
                     return oldItem.equals(newItem);
                 }
             };
@@ -252,14 +234,13 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
+
         MaterialFavoriteButton materialFavoriteButtonNice;
         TextView title,newTitle;
         ImageView img;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            //\\//\\
             newTitle = itemView.findViewById(R.id.title_title);
             title = itemView.findViewById(R.id.get_title);
             img = itemView.findViewById(R.id.movie_img);
@@ -271,7 +252,7 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
 
 
 
-    public void saveFavorites(Context context, List<MovieModel> favorites) {
+    public void saveFavorites(Context context, List<TopMovieModel> favorites) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
 
@@ -287,24 +268,24 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
         editor.commit();
     }
 
-    public void addFavorite(Context context, MovieModel movie) {
-        List<MovieModel> favorites = getFavorites(context);
+    public void addFavorite(Context context, TopMovieModel movie) {
+        List<TopMovieModel> favorites = getFavorites(context);
         if (favorites == null)
-            favorites = new ArrayList<MovieModel>();
+            favorites = new ArrayList<TopMovieModel>();
         favorites.add(movie);
         saveFavorites(context, favorites);
     }
-    public void removeFavorite(Context context, MovieModel movie) {
-        ArrayList<MovieModel> favorites = getFavorites(context);
+    public void removeFavorite(Context context, TopMovieModel movie) {
+        ArrayList<TopMovieModel> favorites = getFavorites(context);
         if (favorites != null) {
             favorites.remove(movie);
             saveFavorites(context, favorites);
         }
     }
 
-    public ArrayList<MovieModel> getFavorites(Context context) {
+    public ArrayList<TopMovieModel> getFavorites(Context context) {
         SharedPreferences settings;
-        List<MovieModel> favorites;
+        List<TopMovieModel> favorites;
 
         settings = context.getSharedPreferences(PREFS_NAME,
                 Context.MODE_PRIVATE);
@@ -313,23 +294,23 @@ public class ItemAdapter extends PagedListAdapter<MovieModel , ItemAdapter.ItemV
             String jsonFavorites = settings.getString(FAVORITES, null);
             Gson gson = new Gson();
 
-            MovieModel[] favoriteItems = gson.fromJson(jsonFavorites,
-                    MovieModel[].class);
+            TopMovieModel[] favoriteItems = gson.fromJson(jsonFavorites,
+                    TopMovieModel[].class);
             favorites = Arrays.asList(favoriteItems);
-            favorites = new ArrayList<MovieModel>(favorites);
+            favorites = new ArrayList<TopMovieModel>(favorites);
 
         } else
             return null;
 
-        return (ArrayList<MovieModel>) favorites;
+        return (ArrayList<TopMovieModel>) favorites;
 
     }
 
-    public boolean checkFavoriteItem(MovieModel checkProduct) {
+    public boolean checkFavoriteItem(TopMovieModel checkProduct) {
         boolean check = false;
-        List<MovieModel> favorites = getFavorites(mCtx);
+        List<TopMovieModel> favorites = getFavorites(mCtx);
         if (favorites != null) {
-            for (MovieModel movie : favorites) {
+            for (TopMovieModel movie : favorites) {
                 if (movie.equals(checkProduct)) {
                     check = true;
                     break;

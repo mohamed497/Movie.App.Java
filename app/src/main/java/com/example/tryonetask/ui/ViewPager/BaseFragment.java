@@ -55,20 +55,13 @@ public abstract class BaseFragment extends Fragment implements OnTextClickListen
 
         if(!isTablet(view.getContext())){
 
-            adapter = new ItemAdapter(view.getContext(), null);
+            adapter = new ItemAdapter(view.getContext(), this);
 
             recyclerView.setAdapter(adapter);
         }
         else {
-
             adapter = new ItemAdapter(view.getContext(), this);
-
         }
-
-
-
-
-
     }
 
     public abstract View provideYourFragmentView(LayoutInflater inflater,ViewGroup parent, Bundle savedInstanceState);
@@ -78,7 +71,7 @@ public abstract class BaseFragment extends Fragment implements OnTextClickListen
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && cm.getActiveNetworkInfo().isConnected();
     }
-    public static boolean isTablet(Context context) {
+    private static boolean isTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;

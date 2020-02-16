@@ -26,6 +26,7 @@ import com.example.tryonetask.Detalis.view_pager.DetailsFragment;
 import com.example.tryonetask.Detalis.view_pager.ReviewsFragment;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
 import com.example.tryonetask.pojo.videos_data.VideoModel;
 import com.example.tryonetask.ui.ViewPager.PagerAdapter;
@@ -69,6 +70,7 @@ public class SingleMovieActivity extends AppCompatActivity{
     RecyclerView recyclerView;
 
     MovieModel movieModel;
+    TopMovieModel topMovieModel;
     private final AppCompatActivity activity = SingleMovieActivity.this;
 
 
@@ -101,6 +103,32 @@ public class SingleMovieActivity extends AppCompatActivity{
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setHasFixedSize(true);
 
+        Intent i = getIntent();
+        if (i.hasExtra("new_movie")){
+            MovieModel movieModel;
+            movieModel = getIntent().getParcelableExtra("new_movie");
+            movieTitle = movieModel.getTitle();
+            overView = movieModel.getOverview();
+            poster = movieModel.getPoster_path();
+            movieId = movieModel.id;
+
+//            Log.d("zxczxc", "MOVIEEEEEE :: "+z);
+
+        }
+
+        Intent ii = getIntent();
+        if (ii.hasExtra("top_movie")){
+            TopMovieModel topMovieModel;
+            topMovieModel = getIntent().getParcelableExtra("top_movie");
+            movieTitle = topMovieModel.getTitle();
+            overView = topMovieModel.getOverview();
+            poster = topMovieModel.getPoster_path();
+            movieId = topMovieModel.id;
+
+//            Log.d("zxczxc", "MOVIEEEEEE :: "+z);
+
+        }
+
         Intent intentThatStartedThisActivity = getIntent();
         if (intentThatStartedThisActivity.hasExtra("movie")){
             movieModel = getIntent().getParcelableExtra("movie");
@@ -111,7 +139,6 @@ public class SingleMovieActivity extends AppCompatActivity{
             Log.d("zxc","moview OverView : " +overView);
             Log.d("zxc","movie title : "+movieTitle);
             Log.d("zxc","movie id : "+movieId);
-
 
         }
         else{
@@ -151,57 +178,32 @@ public class SingleMovieActivity extends AppCompatActivity{
 //        }
 
 
-        MaterialFavoriteButton materialFavoriteButtonNice = findViewById(R.id.favorite_button);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-            @Override
-            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                if (favorite){
-                    Snackbar.make(buttonView, "Added to Favorite",Snackbar.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
-                    startActivity(intent);
-                }else{
-                    Snackbar.make(buttonView, "Removed from Favorite",Snackbar.LENGTH_SHORT).show();
-                    removeFavorite(activity, movieModel);
-//                    Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
-//                    startActivity(intent);
-                }
-            }
-        });
 //        MaterialFavoriteButton materialFavoriteButtonNice = findViewById(R.id.favorite_button);
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        materialFavoriteButtonNice.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
 //            @Override
 //            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
 //                if (favorite){
-//                    SharedPreferences.Editor editor = getSharedPreferences("com.example.tryonetask.Detalis.SingleMovieActivity", MODE_PRIVATE).edit();
-//                    editor.putBoolean("Favorite Added", true);
-//                    editor.commit();
-//                    saveFavorite();
-//                    Snackbar.make(buttonView, "Added to Favorite",
-//                            Snackbar.LENGTH_SHORT).show();
+//                    Snackbar.make(buttonView, "Added to Favorite",Snackbar.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
+//                    startActivity(intent);
 //                }else{
-//                    int movie_id = getIntent().getExtras().getInt("id");
-//                    favoriteDbHelper = new FavoriteDbHelper(SingleMovieActivity.this);
-//                    favoriteDbHelper.deleteFavorite(movie_id);
-//
-//                    SharedPreferences.Editor editor = getSharedPreferences("com.example.tryonetask.Detalis.SingleMovieActivity", MODE_PRIVATE).edit();
-//                    editor.putBoolean("Favorite Removed", true);
-//                    editor.commit();
-//                    Snackbar.make(buttonView, "Removed from Favorite",
-//                            Snackbar.LENGTH_SHORT).show();
+//                    Snackbar.make(buttonView, "Removed from Favorite",Snackbar.LENGTH_SHORT).show();
+//                    removeFavorite(activity, movieModel);
+////                    Intent intent = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
+////                    startActivity(intent);
 //                }
 //            }
 //        });
 
-        btn = findViewById(R.id.btn_favorite);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
-                startActivity(intent1);
-            }
-        });
+//        btn = findViewById(R.id.btn_favorite);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent1 = new Intent(SingleMovieActivity.this,TryReviewActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
 
 
 //        SingleMovieFragment singleMovieFragment = new SingleMovieFragment();

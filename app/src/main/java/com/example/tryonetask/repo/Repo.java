@@ -2,6 +2,7 @@ package com.example.tryonetask.repo;
 
 import com.example.tryonetask.data.MovieInterface;
 import com.example.tryonetask.pojo.ListingResponse;
+import com.example.tryonetask.pojo.ListingTopResponse;
 import com.example.tryonetask.pojo.reviews_data.ListingReviewResponse;
 import com.example.tryonetask.pojo.videos_data.ListingVideoResponse;
 
@@ -30,7 +31,7 @@ public class Repo {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<ListingResponse> topSinlgeMovie(int pageSize , int firstPage){
+    public Single<ListingTopResponse> topSinlgeMovie(int pageSize , int firstPage){
         return movieInterface.getNewTopMovie(firstPage , pageSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

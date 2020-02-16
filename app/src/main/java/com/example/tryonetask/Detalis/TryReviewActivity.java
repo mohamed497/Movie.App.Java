@@ -96,12 +96,14 @@ public class TryReviewActivity extends AppCompatActivity {
         movieList = new ArrayList<>();
 
         List<MovieModel> movie;
+        ItemAdapter itemAdapter = new ItemAdapter(this,null);
+
 
         if (!check){
 
-            movie =  singleMovieActivity.getFavorites(TryReviewActivity.this);
+            movie = itemAdapter.getFavorites(this);
 
-            if (singleMovieActivity.getFavorites(TryReviewActivity.this) != null){
+            if (itemAdapter.getFavorites(this) != null){
                 Log.d("movie_movie","movie"+movie);
 
 
@@ -131,7 +133,6 @@ public class TryReviewActivity extends AppCompatActivity {
 
         }
         else {
-            ItemAdapter itemAdapter = new ItemAdapter(this,null);
             movie = itemAdapter.getFavorites(this);
             if (itemAdapter.getFavorites(this)!= null){
 
@@ -145,62 +146,35 @@ public class TryReviewActivity extends AppCompatActivity {
 
                 }
             }
-//            movie = mainActivity.getFavorites(TryReviewActivity.this);
-//
-//            if (mainActivity.getFavorites(TryReviewActivity.this) != null){
-//
-//                for (int i = 0; i < movie.size(); i++) {
-//                    String title = movie.get(i).getTitle();
-//                    String poster = movie.get(i).getPoster_path();
-//                    if (!checkFavoriteItem(movie.get(i))) {
-//                        Toast.makeText(TryReviewActivity.this, "Cant Add Movie Twice", Toast.LENGTH_SHORT).show();
-//
-//                    } else {
-////                        movieList.get(i);
-////                        Log.d("movie", "MOVIE == :" + title);
-////                        adapter = new MovieAdapter();
-////                        adapter.setList(movieList);
-////                        recyclerView.setAdapter(adapter);
-//                        movieList.add(new MovieModel(title, poster));
-////                        movieList.remove(movie.get(movie.size()-1));
-//                        Log.d("Size", "SIZE__ : = "+movie.size());
-//                    }
-//                    adapter = new MovieAdapter();
-//                    adapter.setList(movieList);
-//                    recyclerView.setAdapter(adapter);
-//
+        }
+
+    }
+
+//    public boolean checkFavoriteItem(MovieModel checkProduct) {
+//        boolean check = false;
+//        List<MovieModel> favorites = mainActivity.getFavorites(TryReviewActivity.this);
+//        if (favorites != null) {
+//            for (MovieModel movie : favorites) {
+//                if (movie.equals(checkProduct)) {
+//                    check = true;
+//                    break;
 //                }
 //            }
+//        }
+//        return check;
+//    }
+//
+//    public Activity getActivity(){
+//        Context context = this;
+//        while (context instanceof ContextWrapper){
+//            if (context instanceof Activity){
+//                return (Activity) context;
+//            }
+//            context = ((ContextWrapper) context).getBaseContext();
+//        }
+//        return null;
 
-        }
-
-    }
-
-    public boolean checkFavoriteItem(MovieModel checkProduct) {
-        boolean check = false;
-        List<MovieModel> favorites = mainActivity.getFavorites(TryReviewActivity.this);
-        if (favorites != null) {
-            for (MovieModel movie : favorites) {
-                if (movie.equals(checkProduct)) {
-                    check = true;
-                    break;
-                }
-            }
-        }
-        return check;
-    }
-
-    public Activity getActivity(){
-        Context context = this;
-        while (context instanceof ContextWrapper){
-            if (context instanceof Activity){
-                return (Activity) context;
-            }
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-        return null;
-
-    }
+//    }
 
 
 

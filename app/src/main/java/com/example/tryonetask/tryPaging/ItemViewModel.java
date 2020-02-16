@@ -1,6 +1,7 @@
 package com.example.tryonetask.tryPaging;
 
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.pojo.TopMovieModel;
 
 import java.util.List;
 
@@ -18,8 +19,11 @@ public class ItemViewModel extends ViewModel {
 
     //creating livedata for PagedList  and PagedKeyedDataSource
     public LiveData<PagedList<MovieModel>> itemPagedList;
-    public LiveData<PagedList<MovieModel>> topItemPagedList;
+    public LiveData<PagedList<TopMovieModel>> topItemPagedList;
+
     LiveData<PageKeyedDataSource<Integer, MovieModel>> liveDataSource;
+    LiveData<PageKeyedDataSource<Integer, TopMovieModel>> liveTopDataSource;
+
 
 
 
@@ -50,7 +54,7 @@ public class ItemViewModel extends ViewModel {
 
     public void TopMovies(){
         TopDataSourceFactory topDataSourceFactory = new TopDataSourceFactory();
-        liveDataSource = topDataSourceFactory.getTopLiveDataSource();
+        liveTopDataSource = topDataSourceFactory.getTopLiveDataSource();
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder())
                         .setEnablePlaceholders(false)

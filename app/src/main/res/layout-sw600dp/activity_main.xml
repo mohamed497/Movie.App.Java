@@ -40,12 +40,12 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                <com.github.ivbaranov.mfb.MaterialFavoriteButton
-                    android:id="@+id/favorite_button"
-                    android:layout_width="105dp"
-                    android:layout_height="91dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/colorAccent" />
+<!--                <com.github.ivbaranov.mfb.MaterialFavoriteButton-->
+<!--                    android:id="@+id/favorite_button"-->
+<!--                    android:layout_width="105dp"-->
+<!--                    android:layout_height="91dp"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:background="@color/colorAccent" />-->
             </androidx.appcompat.widget.Toolbar>
 
             <FrameLayout

@@ -38,20 +38,7 @@
                 android:layout_height="180dp"
                 android:src="@drawable/ic_launcher_background"
                 tools:layout_editor_absoluteX="-27dp" />
-            <com.github.ivbaranov.mfb.MaterialFavoriteButton
-                android:visibility="gone"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center"
-                android:id="@+id/favorite_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentRight="true"
 
-                android:background="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/single_overView"
@@ -62,6 +49,7 @@
                 android:text="TITLE"
                 android:textSize="30sp"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/single_title"

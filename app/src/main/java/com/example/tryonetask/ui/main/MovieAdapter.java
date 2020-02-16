@@ -2,6 +2,7 @@ package com.example.tryonetask.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Movie;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.tryonetask.Detalis.SingleMovieActivity;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.MovieModel;
+import com.example.tryonetask.tryPaging.ItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item_favorite, parent, false);
         context = parent.getContext();
         return new MovieViewHolder(view);
     }
@@ -67,6 +69,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 Toast.makeText(context, "Movie Removed SUCC !", Toast.LENGTH_SHORT).show();
             }
         });
+
+        if(isTablet(context)){
+            holder.title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ItemAdapter itemAdapter = new ItemAdapter(context,null);
+                    itemAdapter.removeFavorite(context, movie);
+                }
+            });
+
+        }
 
 
     }
@@ -152,5 +165,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             title = itemView.findViewById(R.id.get_title);
             img = itemView.findViewById(R.id.movie_img);
         }
+    }
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }
