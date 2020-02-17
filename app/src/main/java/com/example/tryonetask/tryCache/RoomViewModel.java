@@ -42,6 +42,10 @@ public class RoomViewModel extends AndroidViewModel {
         movieCacheRepo.insert(movieModel);
     }
 
+//    public void update(String newTitle, String newPoster){
+//        movieCacheRepo;
+//    }
+
 
 
 

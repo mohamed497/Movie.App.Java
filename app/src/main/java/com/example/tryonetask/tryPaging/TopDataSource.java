@@ -1,11 +1,15 @@
 package com.example.tryonetask.tryPaging;
 
+import android.app.Application;
+
 import com.example.tryonetask.data.RetrofitClient;
 import com.example.tryonetask.pojo.ListingResponse;
 import com.example.tryonetask.pojo.ListingTopResponse;
 import com.example.tryonetask.pojo.MovieModel;
 import com.example.tryonetask.pojo.TopMovieModel;
 import com.example.tryonetask.repo.Repo;
+import com.example.tryonetask.tryCache.RoomViewModel;
+import com.example.tryonetask.tryCache.TopRoomViewModel;
 
 import java.util.List;
 
@@ -26,6 +30,7 @@ public class TopDataSource extends PageKeyedDataSource<Integer, TopMovieModel> {
     public static List<TopMovieModel> getTopMoviesToDB;
 
     private Repo repo = new Repo(RetrofitClient.getInstance().getApi());
+    private TopRoomViewModel topRoomViewModel = new TopRoomViewModel(new Application());
 
 
     @Override
@@ -39,6 +44,7 @@ public class TopDataSource extends PageKeyedDataSource<Integer, TopMovieModel> {
                                 if (listingTopResponse != null) {
                                     callback.onResult(listingTopResponse.results, null, FIRST_PAGE + 1);
                                     getTopMoviesToDB = listingTopResponse.results;
+                                    topRoomViewModel.insertTop(getTopMoviesToDB);
 
                                 }
                             }

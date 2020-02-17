@@ -1,5 +1,7 @@
 package com.example.tryonetask.tryPaging;
 
+import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.example.tryonetask.data.RetrofitClient;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PageKeyedDataSource;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.BiConsumer;
@@ -30,7 +33,13 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
 
     private Repo repo = new Repo(RetrofitClient.getInstance().getApi());
 
-
+    private RoomViewModel roomViewModel = new RoomViewModel(new Application());
+//    private Context context;
+//
+//
+//    public ItemDataSource(Context context){
+//        this.context=context;
+//    }
 
 
     @Override
@@ -42,16 +51,21 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
                     public void accept(ListingResponse listingResponse, Throwable throwable) throws Exception {
                         if (listingResponse != null) {
                             callback.onResult(listingResponse.results, null, FIRST_PAGE + 1);
-                            Log.d("zxc","" + listingResponse.results);
+                            Log.d("zxc","ZZ : " + listingResponse.results);
 
+//                            for (int i= 0; i<listingResponse.results.size()){
+//                                roomViewModel.
+//                            }
                             getMoviesToDB = listingResponse.results;
+                            Log.d("RRR", "SIZE SIZE : "+listingResponse.results.size());
+//                            listingResponse.results.get(i).
+                            roomViewModel.insert(getMoviesToDB);
 
                         }
                     }
                 }));
 
     }
-
 
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, MovieModel> callback) {
@@ -88,5 +102,6 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, MovieModel> {
         }));
 
     }
+
 
 }

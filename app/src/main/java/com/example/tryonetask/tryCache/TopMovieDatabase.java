@@ -59,6 +59,8 @@ public abstract class TopMovieDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(final Void... params) {
 
+//            movieDao.deleteAllTopMovies();
+
             if (TopDataSource.getTopMoviesToDB != null){
                 movieDao.insertTopMovies(TopDataSource.getTopMoviesToDB);
             }

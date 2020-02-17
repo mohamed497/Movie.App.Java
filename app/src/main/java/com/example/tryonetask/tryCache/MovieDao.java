@@ -27,4 +27,7 @@ public interface MovieDao {
     @Query("DELETE FROM MOVIES")
     void deleteAllMovies();
 
+    @Query("UPDATE Movies SET title = :newTitle & poster_path = :newPoster ")
+    void update(String newTitle, String newPoster);
+
 }

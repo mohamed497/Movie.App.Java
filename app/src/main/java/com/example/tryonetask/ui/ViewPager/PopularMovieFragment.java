@@ -68,9 +68,13 @@ public class PopularMovieFragment extends BaseFragment{
                 super.itemViewModel.itemPagedList.observe(this, new Observer<PagedList<MovieModel>>() {
                     @Override
                     public void onChanged(PagedList<MovieModel> movieModels) {
+                        Log.d("ttt","Movie Size : : "+movieModels.size());
+                        for (int i = 0 ; i< movieModels.size(); i++){
+                        }
                         adapter.submitList(movieModels);
                         if(movieModels != null){
-                            roomViewModel.insert(movieModels);
+                            //\\ //\\ //\\
+//                            roomViewModel.insert(movieModels);
 //                            Log.d("zxcc","z"+movieModels);
 //                        movieDao.insertMovies(movieModels);
                         }
@@ -103,11 +107,11 @@ public class PopularMovieFragment extends BaseFragment{
         return view;
     }
 
-    @Override
-    public void onStop() {
-        super.itemViewModel.itemPagedList.removeObservers(this);
-        super.onStop();
-    }
+//    @Override
+//    public void onStop() {
+//        super.itemViewModel.itemPagedList.removeObservers(this);
+//        super.onStop();
+//    }
 
 
     @Override

@@ -12,6 +12,7 @@ import com.example.tryonetask.ui.main.MainActivity;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -64,12 +65,25 @@ public abstract class MovieDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params) {
+
+
             if(ItemDataSource.getMoviesToDB!= null){
 
-            Log.d("zxc","" + ItemDataSource.getMoviesToDB);
+                Log.d("zxc","" + ItemDataSource.getMoviesToDB);
             movieDao.insertMovies(ItemDataSource.getMoviesToDB);
             }
+             LiveData<List<MovieModel>>  x =  movieDao.getMovies();
 
+
+            //\\ //\\ //\\
+//            try {
+//                Thread.sleep(10000);
+//                movieDao.deleteAllMovies();
+//
+//                movieDao.getMovies();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
             return null;
         }

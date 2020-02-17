@@ -19,6 +19,7 @@ public class MovieCacheRepo {
 
     private MovieDao movieDao;
     private LiveData<List<MovieModel>> mAllMovies;
+    private LiveData<List<MovieModel>> mUpdateMovies;
 
 
     public MovieCacheRepo(Application application) {
@@ -26,6 +27,7 @@ public class MovieCacheRepo {
         MovieDatabase db = MovieDatabase.getDatabase(application);
         movieDao = db.MovieDao();
         mAllMovies = movieDao.getMovies();
+
     }
 
     LiveData<List<MovieModel>> getAllMovies() {

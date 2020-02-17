@@ -65,7 +65,8 @@ public class TopMovieFragment extends BaseFragment implements TopTextClickListen
                 public void onChanged(PagedList<TopMovieModel> topMovieModels) {
                     topItemAdapter.submitList(topMovieModels);
                     if(topMovieModels != null){
-                        roomViewModel.insertTop(topMovieModels);
+                        //\\ //\\ //\\
+//                        roomViewModel.insertTop(topMovieModels);
 //                        movieDao.insertMovies(movieModels);
                     }
                 }
@@ -140,10 +141,10 @@ public class TopMovieFragment extends BaseFragment implements TopTextClickListen
     }
 
 
-    @Override
-    public void onStop() {
-        super.itemViewModel.topItemPagedList.removeObservers(this);
-        super.onStop();
-    }
+//    @Override
+//    public void onStop() {
+//        super.itemViewModel.topItemPagedList.removeObservers(this);
+//        super.onStop();
+//    }
 
 }
