@@ -36,11 +36,6 @@ import com.example.tryonetask.ui.main.MainActivity;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
-import com.google.api.services.youtube.YouTube;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -78,7 +73,7 @@ public class SingleMovieActivity extends AppCompatActivity{
     private PagerAdapter mPagerAdapter;
     Button btn;
 
-    YouTubePlayerView playerView;
+//    YouTubePlayerView playerView;
     String API_KEY = "AIzaSyAV8kimexMX2qBKmbN2zK8qgVQ5Zb1klOI";
     String VIDEO_ID = "Kopyc23VfSw";
 

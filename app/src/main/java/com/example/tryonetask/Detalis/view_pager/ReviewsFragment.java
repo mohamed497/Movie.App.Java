@@ -15,11 +15,7 @@ import com.example.tryonetask.Detalis.reviews.ReviewAdapter;
 import com.example.tryonetask.Detalis.video.VideoAdapter;
 import com.example.tryonetask.R;
 import com.example.tryonetask.pojo.reviews_data.ReviewModel;
-import com.example.tryonetask.pojo.videos_data.VideoModel;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+
 
 import java.util.List;
 
@@ -39,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ReviewsFragment extends Fragment {
 
 
-    private YouTubePlayer YPlayer;
+//    private YouTubePlayer YPlayer;
 
 
     DetailsViewModel detailsViewModel;

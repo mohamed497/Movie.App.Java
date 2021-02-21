@@ -30,7 +30,6 @@ import com.example.tryonetask.ui.ViewPager.PopularMovieFragment;
 import com.example.tryonetask.ui.main.MainActivity;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
